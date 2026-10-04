@@ -13,6 +13,10 @@ day key) as a provider:
   characters of the key's sha256. The key itself never leaves the machine
   except to Venice. The request carries the plugin version in a header.
 
+- with QUOTUM_X_SEARCH=1 only: the list of models that support xAI's live
+  web and X search, read from https://api.venice.ai/api/v1/models (no key
+  sent), so the search is asked for only on those models (the Grok family).
+
 Nothing else is sent anywhere. No telemetry, no wallet code, no self-update.
 """
 
@@ -33,9 +37,10 @@ from providers.base import ProviderProfile
 
 logger = logging.getLogger(__name__)
 
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 PROVIDER_ID = "quotum"
 API_KEY_ENV = "QUOTUM_SEAT_KEY"
+X_SEARCH_ENV = "QUOTUM_X_SEARCH"
 VENICE_BASE = "https://api.venice.ai/api/v1"
 SITE = "https://quotum.org"
 TIMEOUT = 8.0
@@ -50,6 +55,28 @@ def _get_json(url: str, timeout: float = TIMEOUT) -> Any:
     request = urllib.request.Request(url, headers={"accept": "application/json", "user-agent": f"hermes-quotum/{VERSION}", "x-quotum-plugin": VERSION})
     with urllib.request.urlopen(request, timeout=timeout) as response:  # noqa: S310 - fixed https hosts
         return json.load(response)
+
+
+_X_MODELS: set[str] | None = None
+
+
+def x_search_on() -> bool:
+    return os.environ.get(X_SEARCH_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def x_search_models(timeout: float = TIMEOUT) -> set[str]:
+    """Venice's models with supportsXSearch, read once; an empty set (not kept) when the catalog does not answer."""
+    global _X_MODELS
+    if _X_MODELS is None:
+        request = urllib.request.Request(f"{VENICE_BASE}/models?type=text", headers={"accept": "application/json", "user-agent": f"hermes-quotum/{VERSION}"})
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:  # noqa: S310 - fixed https host
+                rows = json.load(response).get("data") or []
+        except Exception as exc:
+            logger.debug("quotum: venice catalog unavailable: %s", exc)
+            return set()
+        _X_MODELS = {r["id"] for r in rows if isinstance(r, dict) and ((r.get("model_spec") or {}).get("capabilities") or {}).get("supportsXSearch")}
+    return _X_MODELS
 
 
 def _iso(value: Any) -> datetime | None:
@@ -96,7 +123,11 @@ class QuotumProfile(ProviderProfile):
         return ids or None
 
     def build_extra_body(self, *, session_id: str | None = None, **context: Any) -> dict[str, Any]:
-        return {"venice_parameters": {"include_venice_system_prompt": False}}
+        params: dict[str, Any] = {"include_venice_system_prompt": False}
+        # QUOTUM_X_SEARCH=1: xAI's live web and X search, on the models that have it; Venice charges it per search
+        if x_search_on() and context.get("model") in x_search_models():
+            params["enable_x_search"] = True
+        return {"venice_parameters": params}
 
     def fetch_account_usage(self, *, base_url: str | None = None, api_key: str | None = None):
         from agent.account_usage import AccountUsageSnapshot, AccountUsageWindow

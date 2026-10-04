@@ -35,6 +35,7 @@ The key can be a seat key or a day key.
 | chat completions | api.venice.ai | your prompts, the model's replies and the key, straight from your machine to Venice |
 | model list | quotum.org/api/seat/models | nothing of yours: the public catalog of the seat's models |
 | `/usage` | quotum.org/api/meter/&lt;h&gt; | h, the first 16 hex characters of the key's sha256, and the plugin version in a header. The key itself is never sent to quotum.org |
+| X search model list (only with `QUOTUM_X_SEARCH=1`) | api.venice.ai/api/v1/models | nothing of yours: Venice's public model catalog, read once to see which models support X search |
 
 quotum never sees a prompt or a reply. The keeper reads only the dollar amount Venice reports for each key and publishes it per seat in the daily receipt.
 
@@ -48,6 +49,10 @@ The list is the seat's catalog: private models and anonymized models, as Venice 
 - **Anonymized:** these are third-party models (for example Claude, GPT or Gemini). The provider behind the model sees the prompt but not who sent it.
 
 Each model's class is shown on [quotum.org/models](https://quotum.org/models). If you only want private models, pick from that list. The plugin turns off Venice's own system prompt on every request.
+
+## Live X search (optional)
+
+Set `QUOTUM_X_SEARCH=1` in `~/.hermes/.env` and Grok models (grok-4-7 and the rest of the family) search the live web and X while they answer. Venice charges this per search, about $0.01 each, on top of the model's price, and it comes out of the same seat cap. Other models ignore the setting. It is off by default.
 
 ## Errors
 
