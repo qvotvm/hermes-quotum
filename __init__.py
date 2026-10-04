@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import dataclasses
 import hashlib
+import inspect
 import json
 import logging
 import os
@@ -37,7 +38,7 @@ from providers.base import ProviderProfile
 
 logger = logging.getLogger(__name__)
 
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 PROVIDER_ID = "quotum"
 API_KEY_ENV = "QUOTUM_SEAT_KEY"
 X_SEARCH_ENV = "QUOTUM_X_SEARCH"
@@ -77,6 +78,47 @@ def x_search_models(timeout: float = TIMEOUT) -> set[str]:
             return set()
         _X_MODELS = {r["id"] for r in rows if isinstance(r, dict) and ((r.get("model_spec") or {}).get("capabilities") or {}).get("supportsXSearch")}
     return _X_MODELS
+
+
+def _without_web_search(content: bytes) -> bytes | None:
+    """A chat request asking for Venice's X search, without Hermes' own web_search tool; None to leave it as is.
+
+    With enable_x_search Venice adds xAI's search tool named web_search, and a request that already has one is refused
+    (400 "Duplicate tool names: web_search"). The model then searches the web and X through Venice instead.
+    """
+    try:
+        data = json.loads(content)
+    except ValueError:
+        return None
+    if not isinstance(data, dict) or not (data.get("venice_parameters") or {}).get("enable_x_search") or not data.get("tools"):
+        return None
+    tools = [t for t in data["tools"] if ((t or {}).get("function") or {}).get("name") != "web_search"]
+    if len(tools) == len(data["tools"]):
+        return None
+    if tools:
+        data["tools"] = tools
+    else:
+        data.pop("tools", None)
+        data.pop("tool_choice", None)
+    return json.dumps(data).encode()
+
+
+def _x_search_client(client_kwargs: dict[str, Any]) -> Any:
+    """openai.OpenAI on openai's own default httpx client, whose transport applies _without_web_search to chat requests."""
+    import httpx
+    import openai
+
+    class XSearchTransport(httpx.HTTPTransport):
+        def handle_request(self, request: httpx.Request) -> httpx.Response:
+            if request.method == "POST" and request.url.path.endswith("/chat/completions"):
+                body = _without_web_search(request.read())
+                if body is not None:
+                    headers = [(k, v) for k, v in request.headers.items() if k.lower() != "content-length"]
+                    request = httpx.Request(request.method, request.url, headers=headers, content=body, extensions=request.extensions)
+            return super().handle_request(request)
+
+    known = set(inspect.signature(openai.OpenAI.__init__).parameters) - {"self", "http_client"}
+    return openai.OpenAI(http_client=openai.DefaultHttpxClient(transport=XSearchTransport()), **{k: v for k, v in client_kwargs.items() if k in known})
 
 
 def _iso(value: Any) -> datetime | None:
@@ -128,6 +170,10 @@ class QuotumProfile(ProviderProfile):
         if x_search_on() and context.get("model") in x_search_models():
             params["enable_x_search"] = True
         return {"venice_parameters": params}
+
+    def create_client(self, **client_kwargs: Any) -> Any | None:
+        # only with QUOTUM_X_SEARCH on: Hermes' own client otherwise
+        return _x_search_client(client_kwargs) if x_search_on() else None
 
     def fetch_account_usage(self, *, base_url: str | None = None, api_key: str | None = None):
         from agent.account_usage import AccountUsageSnapshot, AccountUsageWindow

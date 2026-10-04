@@ -52,7 +52,7 @@ Each model's class is shown on [quotum.org/models](https://quotum.org/models). I
 
 ## Live X search (optional)
 
-Set `QUOTUM_X_SEARCH=1` in `~/.hermes/.env` and Grok models (grok-4-7 and the rest of the family) search the live web and X while they answer. Venice charges this per search, about $0.01 each, on top of the model's price, and it comes out of the same seat cap. Other models ignore the setting. It is off by default.
+Set `QUOTUM_X_SEARCH=1` in `~/.hermes/.env` and Grok models (grok-4-7 and the rest of the family) search the live web and X while they answer. On those requests Hermes' own web_search tool is left out, so the model searches through Venice instead (with it in, Venice refuses the request). Venice charges this per search, about $0.01 each, on top of the model's price, and it comes out of the same seat cap. Other models ignore the setting. It is off by default.
 
 ## Errors
 
