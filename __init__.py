@@ -2,8 +2,8 @@
 
 A quotum seat holds a Venice key with a daily dollar cap, paid for by the
 QUOTUM trading tax; what the seat leaves unspent at the 20:00 UTC bell buys
-QUOTUM and burns it. This profile lets Hermes use that key (a seat key or a
-day key) as a provider:
+QUOTUM and burns it. This profile lets Hermes use that key (a seat key, the
+seat's agent key or a day key) as a provider:
 
 - inference goes straight to Venice (https://api.venice.ai/api/v1) with the
   key in QUOTUM_SEAT_KEY. quotum never sees a prompt or a reply;
@@ -38,7 +38,7 @@ from providers.base import ProviderProfile
 
 logger = logging.getLogger(__name__)
 
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 PROVIDER_ID = "quotum"
 API_KEY_ENV = "QUOTUM_SEAT_KEY"
 X_SEARCH_ENV = "QUOTUM_X_SEARCH"
@@ -185,7 +185,7 @@ class QuotumProfile(ProviderProfile):
         try:
             m = _get_json(f"{SITE}/api/meter/{key_hash(key)}")
         except urllib.error.HTTPError as exc:
-            why = "this key is not a live quotum seat or day key" if exc.code == 404 else f"the meter answered {exc.code}"
+            why = "this key is not a live quotum seat, agent or day key" if exc.code == 404 else f"the meter answered {exc.code}"
             return AccountUsageSnapshot(provider=self.name, source="quotum_meter", fetched_at=now, title="quotum seat", unavailable_reason=why)
         except Exception as exc:
             return AccountUsageSnapshot(provider=self.name, source="quotum_meter", fetched_at=now, title="quotum seat", unavailable_reason=f"the meter did not answer ({type(exc).__name__})")

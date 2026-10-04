@@ -26,7 +26,7 @@ hermes config set model.default kimi-k3
 
 If you run the gateway, restart it after installing: `hermes gateway restart`.
 
-The key can be a seat key or a day key.
+The key can be a seat key, the seat's agent key or a day key. An agent key is cut from your seat on [quotum.org/seat](https://quotum.org/seat) with its own amount per session, so a busy agent can't spend the rest of the seat. Each session it gets that amount again; what it leaves unspent burns at the bell with the rest of the seat.
 
 ## What goes where
 
