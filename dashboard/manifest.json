@@ -1,0 +1,11 @@
+{
+  "name": "quotum",
+  "label": "Seals",
+  "description": "Your quotum seat's record: seals from Copper to Olympian, recomputable from the chain and the bell receipts.",
+  "icon": "Award",
+  "version": "0.2.0",
+  "tab": { "path": "/seals", "position": "after:analytics" },
+  "entry": "dist/index.js",
+  "css": "dist/style.css",
+  "api": "plugin_api.py"
+}

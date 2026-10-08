@@ -38,7 +38,7 @@ from providers.base import ProviderProfile
 
 logger = logging.getLogger(__name__)
 
-VERSION = "0.1.3"
+VERSION = "0.2.0"
 PROVIDER_ID = "quotum"
 API_KEY_ENV = "QUOTUM_SEAT_KEY"
 X_SEARCH_ENV = "QUOTUM_X_SEARCH"

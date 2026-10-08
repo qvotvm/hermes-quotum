@@ -1,0 +1,42 @@
+.qs{max-width:1100px;padding:8px 4px 40px}
+.qs h1{font-size:28px;font-weight:600;margin:4px 0 6px}
+.qs-note{opacity:.7;font-size:13px;line-height:1.5;margin:4px 0 0}
+.qs-note a{text-decoration:underline;text-underline-offset:3px}
+.qs-fam{margin-top:26px}
+.qs-fam h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;border-bottom:1px solid currentColor;padding-bottom:6px;margin:0}
+.qs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:12px}
+.qs-seal{border:1px solid rgba(127,127,127,.35);padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.qs-seal.off{opacity:.5}
+.qs-seal b{font-size:17px;font-weight:600}
+.qs-tier{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.qs-steps{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin:6px 0 4px}
+.qs-steps i{height:7px;border:1px solid currentColor;opacity:.8}
+.qs-steps i.f{background:currentColor}
+.qs-seal small{font-size:11.5px;opacity:.7;border-top:1px solid rgba(127,127,127,.25);padding-top:6px}
+/* Match Hermes Achievements' tier colors, badges and card treatment, scoped to Seals. */
+.qs{color:var(--color-foreground);display:flex;flex-direction:column;gap:1rem}
+.qs-head{border:1px solid var(--color-border);padding:1.25rem;background:radial-gradient(circle at 12% 0,rgba(103,232,249,.13),transparent 30%),var(--color-card)}
+.qs-head h1{font-size:clamp(2rem,4vw,4.2rem);letter-spacing:-.06em;line-height:1;margin:0 0 .65rem}
+.qs-note{color:var(--color-muted-foreground);opacity:1}
+.qs-ladder{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin:1rem 0 .65rem}
+.qs-arrow{color:var(--color-muted-foreground)}
+.qs-tier{border:1px solid var(--qs-tier,var(--color-border));color:var(--qs-tier,var(--color-muted-foreground));background:color-mix(in srgb,var(--qs-tier,var(--color-border)) 10%,transparent);padding:.2rem .4rem;font-family:var(--font-mono,ui-monospace,monospace);opacity:1}
+.qs-tier-pending{--qs-tier:var(--color-muted-foreground)}
+.qs-tier-copper{--qs-tier:#b87333}
+.qs-tier-silver{--qs-tier:#c0c7d2}
+.qs-tier-gold{--qs-tier:#f2c94c}
+.qs-tier-diamond{--qs-tier:#67e8f9}
+.qs-tier-olympian{--qs-tier:#c084fc}
+.qs-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:.9rem}
+.qs-seal{border-color:color-mix(in srgb,var(--qs-tier) 46%,var(--color-border));background:radial-gradient(circle at 2.6rem 2.2rem,color-mix(in srgb,var(--qs-tier) 16%,transparent),transparent 34%),var(--color-card);padding:1rem;gap:.75rem}
+.qs-seal:hover{border-color:var(--qs-tier)}
+.qs-badges{display:flex;gap:.35rem;flex-wrap:wrap}
+.qs-icon{width:128px;height:128px;object-fit:contain;align-self:center}
+.qs-disc{width:144px;height:144px;box-sizing:border-box;align-self:center;display:flex;align-items:center;justify-content:center;border:3px double #1b1054;border-radius:50%;background:#f7f5ef;color:#1b1054;box-shadow:0 3px 10px rgba(0,0,0,.22)}
+.qs-disc-pending{opacity:.45}
+.qs-icon-pending{filter:grayscale(1)}
+.qs-description{margin:0;color:var(--color-muted-foreground);font-size:.86rem;line-height:1.45}
+.qs-steps{color:var(--qs-tier)}
+.qs-seal small{color:var(--color-muted-foreground);opacity:1;line-height:1.5}
+.qs-verify{overflow-wrap:anywhere;margin-top:auto}
+.qs-verify a{text-decoration:underline;text-underline-offset:3px}

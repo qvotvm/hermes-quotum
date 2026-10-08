@@ -1,7 +1,7 @@
 name: quotum
 kind: model-provider
-version: 0.1.3
-description: A quotum seat's key as a Hermes provider, with the seat's cap, spend and the 20:00 UTC bell in /usage
+version: 0.2.0
+description: A quotum seat's key as a Hermes provider, with cap, spend and the 20:00 UTC bell in /usage, plus record seals in the dashboard
 author: quotum
 requires_hermes: ">=0.21.5"
 requires_env:
