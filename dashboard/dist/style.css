@@ -40,3 +40,11 @@
 .qs-seal small{color:var(--color-muted-foreground);opacity:1;line-height:1.5}
 .qs-verify{overflow-wrap:anywhere;margin-top:auto}
 .qs-verify a{text-decoration:underline;text-underline-offset:3px}
+.qs-balance{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem}
+.qs-balance dt{color:var(--color-muted-foreground);font-size:.85rem}
+.qs-balance dd{font-family:var(--font-mono,ui-monospace,monospace);font-size:1.3rem;margin:.3rem 0}
+.qs-receipts{max-width:100%;overflow-x:auto}
+.qs-receipts table{border-collapse:collapse;width:100%;font-size:.8rem}
+.qs-receipts th,.qs-receipts td{text-align:left;padding:.65rem;border-bottom:1px solid var(--color-border);overflow-wrap:anywhere}
+.qs-receipts caption{text-align:left;caption-side:bottom;padding:.75rem 0}
+.qs-refresh{margin-top:1rem}

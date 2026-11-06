@@ -1,9 +1,9 @@
 {
   "name": "quotum",
   "label": "Seals",
-  "description": "Your quotum seat's record: seals from Copper to Olympian, recomputable from the chain and the bell receipts.",
+  "description": "Your quotum seat's seals or prepaid Pay as you go (PAYG) balance and receipts.",
   "icon": "Award",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "tab": { "path": "/seals", "position": "after:analytics" },
   "entry": "dist/index.js",
   "css": "dist/style.css",
