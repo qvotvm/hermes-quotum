@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (2026-11-06)
+
+- README links to the Hermes installation guide instead of a piped shell installer, so `hermes plugins install` no longer blocks the plugin on the community-source scan.
+
 ## 0.3.0 (2026-11-06)
 
 - Add prepaid PAYG project-key mode with precedence over the seat key, a separate text-chat catalog, 2048-token default output limit, authenticated balance and receipts in usage and the existing dashboard tab. Preserve JSON and SSE billing metadata, unique or caller-supplied idempotency keys, and zero PAYG SDK retries.

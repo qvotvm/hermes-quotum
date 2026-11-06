@@ -223,8 +223,8 @@ class PluginTests(unittest.TestCase):
         with patch.object(plugin.urllib.request, "build_opener", return_value=opener) as build:
             self.assertEqual(plugin._get_json(plugin.SITE + "/api/meter/0123456789abcdef"), {"leftUsd": 1})
         request = send.call_args.args[0]
-        self.assertEqual(request.get_header("X-quotum-plugin"), "0.3.0")
-        self.assertEqual(request.get_header("User-agent"), "hermes-quotum/0.3.0")
+        self.assertEqual(request.get_header("X-quotum-plugin"), "0.3.1")
+        self.assertEqual(request.get_header("User-agent"), "hermes-quotum/0.3.1")
         self.assertIsNone(request.get_header("Authorization"))
         self.assertIsNone(request.data)
         self.assertIsInstance(build.call_args.args[0], plugin._NoRedirect)

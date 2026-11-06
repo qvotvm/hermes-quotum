@@ -1,6 +1,6 @@
 name: quotum
 kind: model-provider
-version: 0.3.0
+version: 0.3.1
 description: A quotum seat or prepaid pay as you go (PAYG) project, with usage, seals or balance and receipts in the dashboard
 author: quotum
 requires_hermes: ">=0.21.5"

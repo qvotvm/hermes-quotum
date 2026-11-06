@@ -6,11 +6,7 @@ This is a community plugin, not affiliated with Nous Research.
 
 ## Install
 
-Requires Hermes 0.21.5 or later with `agent.secret_scope.get_secret`. Hosts without that API can load the plugin, but provider actions refuse credentials and the dashboard asks you to upgrade Hermes and restart it and its gateway. No Hermes yet? Install it first.
-
-```
-curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
-```
+Requires Hermes 0.21.5 or later with `agent.secret_scope.get_secret`. Hosts without that API can load the plugin, but provider actions refuse credentials and the dashboard asks you to upgrade Hermes and restart it and its gateway. No Hermes yet? Install it first with the [Hermes Agent installation guide](https://hermes-agent.nousresearch.com/docs/getting-started/installation).
 
 Then the plugin:
 
