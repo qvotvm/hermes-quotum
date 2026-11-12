@@ -74,11 +74,11 @@ class PluginTests(unittest.TestCase):
         classified = error_classifier.ClassifiedError(reason=error_classifier.FailoverReason.billing,
                                                        **{k: v for k, v in plugin.classify_error(status_code=402).items() if k != "reason"})
         agent = MagicMock()
-        loop = SimpleNamespace(_arm_fallback_restart=MagicMock(), _is_copilot_provider=lambda a: False,
+        loop = SimpleNamespace(_arm_fallback_restart=MagicMock(), _credential_refresh_profile=MagicMock(return_value=None), _is_copilot_provider=lambda a: False,
                                _is_stale_copilot_credential_error=MagicMock())
         with patch.dict(sys.modules, {"agent.conversation_loop": loop}), patch.object(turn_api_error, "settle_delivered_partial", return_value=""), patch.object(turn_api_error, "nonretryable_client_error_result", return_value={"terminal": True}) as terminal, patch.object(turn_api_error, "interruptible_backoff_sleep") as sleep:
             result = turn_api_error.settle_unrecovered_error(
-                agent, api_error=Exception("cap spent"), classified=classified, _retry=SimpleNamespace(),
+                agent, api_error=Exception("cap spent"), classified=classified, _retry=SimpleNamespace(provider_stale_refresh_attempted=False),
                 status_code=402, error_msg="cap spent", is_context_length_error=False, is_rate_limited=False,
                 _is_zai_coding_overload=False, _provider="quotum", _base=plugin.VENICE_BASE, _model="expensive",
                 messages=[], api_messages=[], api_kwargs={}, active_system_prompt="", conversation_history=[],
@@ -223,8 +223,8 @@ class PluginTests(unittest.TestCase):
         with patch.object(plugin.urllib.request, "build_opener", return_value=opener) as build:
             self.assertEqual(plugin._get_json(plugin.SITE + "/api/meter/0123456789abcdef"), {"leftUsd": 1})
         request = send.call_args.args[0]
-        self.assertEqual(request.get_header("X-quotum-plugin"), "0.3.1")
-        self.assertEqual(request.get_header("User-agent"), "hermes-quotum/0.3.1")
+        self.assertEqual(request.get_header("X-quotum-plugin"), "0.3.2")
+        self.assertEqual(request.get_header("User-agent"), "hermes-quotum/0.3.2")
         self.assertIsNone(request.get_header("Authorization"))
         self.assertIsNone(request.data)
         self.assertIsInstance(build.call_args.args[0], plugin._NoRedirect)

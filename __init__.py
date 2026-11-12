@@ -10,7 +10,8 @@ seat's agent key or a day key) as a provider:
 - the model list is the seat's catalog, private and anonymized models only,
   read from https://quotum.org/api/seat/models (no key sent);
 - /usage reads https://quotum.org/api/meter/<h>, where h is the first 16 hex
-  characters of the key's sha256. The key itself never leaves the machine
+  characters of the key's sha256, or QUOTUM_METER_HANDLE behind a secrets proxy.
+  The key itself never leaves the machine
   except to Venice. The request carries the plugin version in a header.
 
 - with QUOTUM_X_SEARCH=1 only: the list of models that support xAI's live
@@ -27,19 +28,21 @@ No telemetry, no wallet code, no self-update.
 from __future__ import annotations
 
 import dataclasses
-import hashlib
+import importlib.util
 import inspect
 import json
 import logging
 import math
 import os
 import threading
+import sys
 import time
 import urllib.error
 import urllib.request
 from contextvars import ContextVar
 from datetime import datetime, timedelta, timezone
 from typing import Any
+from pathlib import Path
 
 from providers import register_provider
 from providers.base import ProviderProfile
@@ -58,9 +61,18 @@ SITE = "https://quotum.org"
 TIMEOUT = 8.0
 
 
-def key_hash(key: str) -> str:
-    """The meter's handle for a key: the first 16 hex of its sha256. The key is not recoverable from it."""
-    return hashlib.sha256(key.strip().encode()).hexdigest()[:16]
+# the dashboard is loaded outside this package; share its handle validation state.
+_handle_name = "_quotum_meter_handle"
+if _handle_name not in sys.modules:
+    _handle_spec = importlib.util.spec_from_file_location(_handle_name, Path(__file__).with_name("meter_handle.py"))
+    _handle_module = importlib.util.module_from_spec(_handle_spec)
+    sys.modules[_handle_name] = _handle_module
+    _handle_spec.loader.exec_module(_handle_module)
+else:
+    _handle_module = sys.modules[_handle_name]
+key_hash = _handle_module.key_hash
+meter_handle = _handle_module.meter_handle
+PROXY_MESSAGE = _handle_module.PROXY_MESSAGE
 
 
 def payg_key() -> str:
@@ -364,10 +376,12 @@ def _cache_seconds() -> float:
 
 
 def meter(key: str) -> dict[str, Any] | None:
-    """Cache successes and failures per hash, including across /usage and 402s."""
+    """Cache successes and failures per meter handle, including across /usage and 402s."""
     if not key:
         return None
-    h = key_hash(key)
+    h = meter_handle(key)
+    if h is None:
+        return None
     with _CACHE_LOCK:
         now = time.monotonic()
         cached = _METER_CACHE.get(h)
@@ -415,6 +429,11 @@ def preflight(key: str, model: str | None, session_id: str | None) -> None:
         return
     identity = session_id
     with _CACHE_LOCK:
+        if meter_handle(key) is None:
+            if identity not in _WARNED:
+                _WARNED.add(identity)
+                logger.warning(PROXY_MESSAGE)
+            return
         if identity in _WARNED:
             return
         rows = catalog()
@@ -438,6 +457,8 @@ def preflight(key: str, model: str | None, session_id: str | None) -> None:
 
 
 def cap_spent_message(key: str, *, now: datetime | None = None) -> str:
+    if meter_handle(key) is None and key.strip().startswith("ibsec_"):
+        return PROXY_MESSAGE
     now = now or datetime.now(timezone.utc)
     m = meter(key)
     bell = _iso(m.get("bellAt")) if m else None
@@ -529,6 +550,8 @@ class QuotumProfile(ProviderProfile):
         key = (api_key or payg.secret(API_KEY_ENV)).strip()
         if not key:
             return AccountUsageSnapshot(provider=self.name, source="quotum_meter", fetched_at=now, title="quotum seat", unavailable_reason=f"{API_KEY_ENV} is not set")
+        if meter_handle(key) is None:
+            return AccountUsageSnapshot(provider=self.name, source="quotum_meter", fetched_at=now, title="quotum seat", unavailable_reason=PROXY_MESSAGE)
         m = meter(key)
         if m is None:
             return AccountUsageSnapshot(provider=self.name, source="quotum_meter", fetched_at=now, title="quotum seat", unavailable_reason="the meter is unavailable or this is not a live quotum key")

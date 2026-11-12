@@ -1,7 +1,7 @@
 """quotum Seals tab backend, mounted at /api/plugins/quotum/.
 
 Reads the seat's record from quotum.org. The seat key never leaves this machine: the meter is asked with the first 16 hex of the
-key's sha256 (as /usage does), which answers the seat; the record of the seat's holder is public, asked by seat. QUOTUM_WALLET reads any
+key's sha256 or QUOTUM_METER_HANDLE (as /usage does), which answers the seat; the record of the seat's holder is public, asked by seat. QUOTUM_WALLET reads any
 wallet's record instead.
 
 With QUOTUM_PAYG_KEY set, the backend reads PAYG balance and receipts with
@@ -13,6 +13,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import sys
 import threading
 import time
 import urllib.error
@@ -28,6 +29,14 @@ router = APIRouter()
 _spec = importlib.util.spec_from_file_location("_quotum_dashboard_payg", Path(__file__).resolve().parent.parent / "payg.py")
 payg_helpers = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(payg_helpers)
+_handle_name = "_quotum_meter_handle"
+if _handle_name not in sys.modules:
+    _handle_spec = importlib.util.spec_from_file_location(_handle_name, Path(__file__).resolve().parent.parent / "meter_handle.py")
+    _handle_module = importlib.util.module_from_spec(_handle_spec)
+    sys.modules[_handle_name] = _handle_module
+    _handle_spec.loader.exec_module(_handle_module)
+else:
+    _handle_module = sys.modules[_handle_name]
 VERSION = payg_helpers.VERSION
 SITE = os.environ.get("QUOTUM_SITE", "https://quotum.org").rstrip("/")
 CACHE_TTL_SECONDS = 120
@@ -87,7 +96,10 @@ def record() -> Dict[str, Any]:
         wallet, key = _env("QUOTUM_WALLET"), _env("QUOTUM_SEAT_KEY")
     except payg_helpers.SecretScopeUnavailable:
         return {"error": payg_helpers.SECRET_SCOPE_MESSAGE}
-    identity = hashlib.sha256(("wallet:" + wallet if wallet else "key:" + key).encode()).hexdigest()
+    handle = _handle_module.meter_handle(key) if not wallet else None
+    if not wallet and key and handle is None:
+        return {"error": _handle_module.PROXY_MESSAGE}
+    identity = hashlib.sha256(("wallet:" + wallet if wallet else "handle:" + str(handle)).encode()).hexdigest()
     with _CACHE_LOCK:
         now = time.monotonic()
         cached = _CACHE.get(identity)
@@ -128,7 +140,10 @@ def _read_record(wallet: str, key: str) -> Dict[str, Any]:
     if not wallet:
         if not key:
             return {"error": "set QUOTUM_SEAT_KEY (your seat key or Hermes key) or QUOTUM_WALLET in ~/.hermes/.env."}
-        m = _get("/api/meter/" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:16])
+        handle = _handle_module.meter_handle(key)
+        if handle is None:
+            return {"error": _handle_module.PROXY_MESSAGE}
+        m = _get("/api/meter/" + handle)
         if m.get("error"):
             return {"error": "this key is not a live quotum key." if m["error"] == "unknown" else m["error"]}
         seat = payg_helpers._count(m.get("seat"))
