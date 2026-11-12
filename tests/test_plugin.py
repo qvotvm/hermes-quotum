@@ -217,6 +217,11 @@ class PluginTests(unittest.TestCase):
             self.assertEqual([t["function"]["name"] for t in data["tools"]], ["other"])
         self.assertIsNone(plugin._without_web_search(b'{"model":"other"}'))
 
+    def test_release_versions_match(self):
+        root = Path(__file__).resolve().parents[1]
+        self.assertEqual(json.loads((root / "dashboard/manifest.json").read_text())["version"], plugin.VERSION)
+        self.assertIn(f"version: {plugin.VERSION}\n", (root / "plugin.yaml").read_text())
+
     def test_metadata_headers_and_redirect_block(self):
         send = MagicMock(side_effect=lambda *a, **kw: io.StringIO('{"leftUsd":1}'))
         opener = SimpleNamespace(open=send)
