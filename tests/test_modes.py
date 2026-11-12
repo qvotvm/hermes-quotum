@@ -55,7 +55,7 @@ def hook_fixtures():
     usage.AccountUsageWindow = dataclasses.make_dataclass("AccountUsageWindow", [(f, object, dataclasses.field(default=None)) for f in ("label", "used_percent", "reset_at", "detail")])
     usage.AccountUsageSnapshot = dataclasses.make_dataclass("AccountUsageSnapshot", [(f, object, dataclasses.field(default=None)) for f in ("provider", "source", "fetched_at", "title", "unavailable_reason", "windows", "details", "raw")])
     scope = types.ModuleType("agent.secret_scope")
-    scope.get_secret = lambda name: os.environ.get(name, "")
+    scope.get_secret = lambda name: os.environ.get(name)
     return {"agent.secret_scope": scope, "providers": providers, "providers.base": base, "agent": types.ModuleType("agent"), "agent.account_usage": usage}
 
 

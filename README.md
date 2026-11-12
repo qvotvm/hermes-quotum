@@ -102,7 +102,7 @@ QUOTUM_PREFLIGHT=1
 QUOTUM_PREFLIGHT_MINUTES=5
 ```
 
-set `QUOTUM_METER_HANDLE` to exactly 16 lowercase hex characters (the first 16 of your seat key's sha256) behind a secrets proxy; invalid values are ignored with one warning, and a proxy key without a valid handle leaves inference running with local meter setup guidance.
+set `QUOTUM_METER_HANDLE` in the active Hermes profile to exactly 16 lowercase hex characters (the first 16 of your seat key's sha256) behind a secrets proxy; invalid values are ignored with one process-wide warning, and a proxy key without a valid handle leaves inference running with local meter setup guidance.
 
 Preflight is off by default and applies only to seat mode. In PAYG mode it performs no seat meter or price reads and never blocks chat. Before a chat request, it compares the meter's `leftUsd` with the chosen model's catalog price for a defined turn: 10,000 input tokens plus 1,000 output tokens. If less is left, it logs one warning per Hermes session and names the cheapest available private model with a lower price for that same turn. It keeps your chosen model.
 

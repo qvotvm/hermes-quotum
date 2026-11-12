@@ -122,7 +122,7 @@ class SecretScopeUnavailable(RuntimeError):
     """The host cannot provide profile-scoped credentials to this plugin."""
 
 
-def secret(name: str) -> str:
+def secret(name: str, *, strip: bool = True) -> str | None:
     """Only Hermes resolves credentials; never borrow process or file secrets."""
     import importlib
 
@@ -135,7 +135,10 @@ def secret(name: str) -> str:
     get_secret = getattr(scope, "get_secret", None)
     if not callable(get_secret):
         raise SecretScopeUnavailable(SECRET_SCOPE_MESSAGE)
-    return (get_secret(name) or "").strip()
+    value = get_secret(name)
+    if value is None:
+        return "" if strip else None
+    return value.strip() if strip else value
 
 
 # Public output schemas are deliberately separate from credential redaction.

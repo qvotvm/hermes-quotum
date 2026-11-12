@@ -1,6 +1,8 @@
 """offline secrets-proxy meter regressions."""
 import hashlib
 import os
+import sys
+from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
 
 import httpx
@@ -48,8 +50,8 @@ class MeterHandleTests(fixtures.ModesTest):
                           ' 0123456789abcdef', '0123456789abcdef\n', 'synthetic-private-value'):
                 os.environ['QUOTUM_METER_HANDLE'] = value
                 self.assertEqual(p.meter_handle(SEAT_KEY), p.key_hash(SEAT_KEY))
-                self.assertIs(p.meter_handle, self.api._handle_module.meter_handle)
-                self.assertEqual(self.api._handle_module.meter_handle(SEAT_KEY), p.key_hash(SEAT_KEY))
+                self.assertIs(p._handle_module, self.api._handle_module)
+                self.assertEqual(self.api._meter_handle(SEAT_KEY), p.key_hash(SEAT_KEY))
         self.assertEqual(len(logs.output), 1)
         self.assertNotIn('synthetic-private-value', logs.output[0])
         with patch.object(p, '_get_json', return_value={'leftUsd': 1}) as get:
@@ -114,3 +116,67 @@ class MeterHandleTests(fixtures.ModesTest):
         with patch.object(self.plugin, '_get_json', return_value={'leftUsd': 1}) as get:
             self.plugin.meter(SEAT_KEY)
         get.assert_called_once_with(self.plugin.SITE + '/api/meter/' + expected)
+
+    def test_handle_uses_active_profile_without_process_fallback(self):
+        p = self.plugin
+        os.environ['QUOTUM_METER_HANDLE'] = '0123456789abcdef'
+        scope = sys.modules['agent.secret_scope']
+        for configured, expected in ((None, p.key_hash(SEAT_KEY)),
+                                     ('fedcba9876543210', 'fedcba9876543210')):
+            values = {'QUOTUM_SEAT_KEY': SEAT_KEY, 'QUOTUM_METER_HANDLE': configured}
+            with patch.object(scope, 'get_secret', side_effect=values.get), \
+                    patch.object(os.environ, 'get', side_effect=AssertionError('process environment forbidden')):
+                self.assertEqual(p.meter_handle(SEAT_KEY), expected)
+                self.assertEqual(self.api._meter_handle(SEAT_KEY), expected)
+                self.assertEqual(p.meter_handle('ibsec_synthetic'), configured)
+
+    def test_dashboard_cannot_reuse_handle_cache_after_key_removal_or_rotation(self):
+        os.environ['QUOTUM_METER_HANDLE'] = '0123456789abcdef'
+        with patch.object(self.api, '_read_record', return_value={'seat': 3}) as read:
+            self.assertEqual(self.api.record()['seat'], 3)
+            os.environ['QUOTUM_SEAT_KEY'] = 'another-synthetic-key'
+            self.assertEqual(self.api.record()['seat'], 3)
+            self.assertEqual(read.call_count, 2)
+        del os.environ['QUOTUM_SEAT_KEY']
+        with patch.object(self.api, '_get') as get:
+            self.assertIn('set QUOTUM_SEAT_KEY', self.api.record()['error'])
+            get.assert_not_called()
+        self.assertIsNone(self.plugin.meter_handle(''))
+        self.assertNotIn(SEAT_KEY, repr(self.api._CACHE))
+        self.assertNotIn('another-synthetic-key', repr(self.api._CACHE))
+
+    def test_invalid_warning_is_once_across_concurrent_provider_and_dashboard(self):
+        os.environ['QUOTUM_METER_HANDLE'] = 'synthetic-invalid-value'
+        with self.assertLogs('quotum.meter_handle', level='WARNING') as logs:
+            with ThreadPoolExecutor(max_workers=12) as pool:
+                list(pool.map(lambda n: (self.plugin.meter_handle if n % 2 else self.api._meter_handle)(SEAT_KEY), range(96)))
+        self.assertEqual(len(logs.output), 1)
+        self.assertNotIn('synthetic-invalid-value', logs.output[0])
+
+    def test_proxy_metadata_and_x_search_send_no_bearer(self):
+        p = self.plugin
+        proxy = 'ibsec_synthetic'
+        os.environ.update(QUOTUM_SEAT_KEY=proxy, QUOTUM_METER_HANDLE='0123456789abcdef', QUOTUM_X_SEARCH='1')
+        self.json_routes({
+            p.SITE + '/api/seat/models': {'models': [{'id': 'grok', 'privacy': 'private'}]},
+            p.SITE + '/api/meter/0123456789abcdef': {'seat': 3, 'capUsd': 1, 'spentUsd': 0, 'leftUsd': 1},
+            p.SITE + '/api/record?seat=3': {},
+            p.VENICE_BASE + '/models?type=text': {'data': []}})
+        p.quotum.fetch_models(api_key=proxy)
+        p.quotum.fetch_account_usage(api_key=proxy)
+        p.x_search_models()
+        self.api.record()
+        self.assertEqual(len(self.seen), 5)
+        for request in self.seen:
+            self.assertNotIn('authorization', {k.lower() for k in request.headers})
+            self.assertNotIn(proxy, request.full_url + repr(request.headers))
+
+    def test_proxy_inference_rejects_other_hosts_before_transport(self):
+        p = self.plugin
+        with patch('httpx.HTTPTransport.handle_request') as send:
+            for base in ('https://quotum.org/api/v1', 'https://api.venice.ai.evil.test/api/v1',
+                         'http://api.venice.ai/api/v1', 'https://api.venice.ai:444/api/v1'):
+                with p.quotum.create_client(api_key='ibsec_synthetic', base_url=base, max_retries=0) as client:
+                    with self.assertRaises(openai.APIConnectionError):
+                        client.chat.completions.create(model='large', messages=[])
+            send.assert_not_called()

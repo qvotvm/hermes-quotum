@@ -3,6 +3,7 @@
 ## 0.3.2 (2026-11-12)
 
 - add QUOTUM_METER_HANDLE for seat keys behind a secrets proxy, shared by usage, cap guidance, preflight and the dashboard. ignore invalid handles with one warning; missing proxy handles leave inference running and explain setup.
+- resolve the meter handle through the active profile, bind dashboard cache entries to the key and handle, and serialize the invalid-handle warning across threads.
 
 ## 0.3.1 (2026-11-06)
 

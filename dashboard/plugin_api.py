@@ -49,6 +49,10 @@ def _env(name: str) -> str:
     return payg_helpers.secret(name)
 
 
+def _meter_handle(key: str) -> str | None:
+    return _handle_module.meter_handle(key, payg_helpers.secret("QUOTUM_METER_HANDLE", strip=False))
+
+
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         raise urllib.error.HTTPError(req.full_url, code, "quotum metadata redirects are disabled", headers, fp)
@@ -96,10 +100,12 @@ def record() -> Dict[str, Any]:
         wallet, key = _env("QUOTUM_WALLET"), _env("QUOTUM_SEAT_KEY")
     except payg_helpers.SecretScopeUnavailable:
         return {"error": payg_helpers.SECRET_SCOPE_MESSAGE}
-    handle = _handle_module.meter_handle(key) if not wallet else None
+    if not wallet and not key:
+        return _read_record(wallet, key)
+    handle = _meter_handle(key) if not wallet else None
     if not wallet and key and handle is None:
         return {"error": _handle_module.PROXY_MESSAGE}
-    identity = hashlib.sha256(("wallet:" + wallet if wallet else "handle:" + str(handle)).encode()).hexdigest()
+    identity = hashlib.sha256(("wallet:" + wallet if wallet else "key:" + key + ":handle:" + str(handle)).encode()).hexdigest()
     with _CACHE_LOCK:
         now = time.monotonic()
         cached = _CACHE.get(identity)
@@ -140,7 +146,7 @@ def _read_record(wallet: str, key: str) -> Dict[str, Any]:
     if not wallet:
         if not key:
             return {"error": "set QUOTUM_SEAT_KEY (your seat key or Hermes key) or QUOTUM_WALLET in ~/.hermes/.env."}
-        handle = _handle_module.meter_handle(key)
+        handle = _meter_handle(key)
         if handle is None:
             return {"error": _handle_module.PROXY_MESSAGE}
         m = _get("/api/meter/" + handle)

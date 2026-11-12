@@ -71,8 +71,11 @@ if _handle_name not in sys.modules:
 else:
     _handle_module = sys.modules[_handle_name]
 key_hash = _handle_module.key_hash
-meter_handle = _handle_module.meter_handle
 PROXY_MESSAGE = _handle_module.PROXY_MESSAGE
+
+
+def meter_handle(key: str) -> str | None:
+    return _handle_module.meter_handle(key, payg.secret("QUOTUM_METER_HANDLE", strip=False))
 
 
 def payg_key() -> str:
