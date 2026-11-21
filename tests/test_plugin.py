@@ -89,6 +89,43 @@ class PluginTests(unittest.TestCase):
         agent._try_activate_fallback.assert_not_called()
         sleep.assert_not_called()
 
+    def test_real_hermes_budget_error_classification_and_terminal_recovery(self):
+        from agent import turn_api_error
+        body = {"code": plugin.OUTPUT_BUDGET_CODE,
+                "message": "reasoning used the whole output budget (max_tokens 64); raise max_tokens or pick a non-reasoning model."}
+        request = httpx.Request("POST", plugin.VENICE_BASE + "/chat/completions")
+        errors = (openai.BadRequestError(body["message"], response=httpx.Response(400, request=request), body=body),
+                  openai.APIError(body["message"], request=request, body=body))
+        for payg_mode in (False, True):
+            for error in errors:
+                with self.subTest(payg=payg_mode, error=type(error).__name__), \
+                        patch.object(plugin, "payg_key", return_value="fixture-project-key" if payg_mode else ""), \
+                        patch("providers.get_provider_profile", return_value=plugin.quotum):
+                    classified = error_classifier.classify_api_error(error, provider="quotum", model="chosen", base_url=plugin.VENICE_BASE)
+                    self.assertEqual(classified.reason.value, "format_error")
+                    self.assertFalse(classified.retryable)
+                    self.assertFalse(classified.should_compress)
+                    self.assertFalse(classified.should_rotate_credential)
+                    self.assertFalse(classified.should_fallback)
+                    self.assertIn("max_tokens 64", classified.message)
+                    agent = MagicMock()
+                    loop = SimpleNamespace(_arm_fallback_restart=MagicMock(), _credential_refresh_profile=MagicMock(return_value=None))
+                    with patch.dict(sys.modules, {"agent.conversation_loop": loop}), \
+                            patch.object(turn_api_error, "settle_delivered_partial", return_value=""), \
+                            patch.object(turn_api_error, "nonretryable_client_error_result", return_value={"terminal": True}) as terminal, \
+                            patch.object(turn_api_error, "interruptible_backoff_sleep") as sleep:
+                        result = turn_api_error.settle_unrecovered_error(
+                            agent, api_error=error, classified=classified, _retry=SimpleNamespace(provider_stale_refresh_attempted=False),
+                            status_code=getattr(error, "status_code", None), error_msg=str(error), is_context_length_error=False,
+                            is_rate_limited=False, _is_zai_coding_overload=False, _provider="quotum", _base=plugin.VENICE_BASE,
+                            _model="chosen", messages=[], api_messages=[], api_kwargs={}, active_system_prompt="",
+                            conversation_history=[], approx_tokens=0, retry_count=1, max_retries=10,
+                            compression_attempts=0, api_call_count=1)
+                    self.assertEqual(result.action, "return")
+                    terminal.assert_called_once()
+                    agent._try_activate_fallback.assert_not_called()
+                    sleep.assert_not_called()
+
     def test_preflight_transport_uses_actual_key_and_preserves_model(self):
         plugin.quotum.build_extra_body(session_id="session-live", model="expensive")
         def get(url, **kwargs):

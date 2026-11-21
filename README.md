@@ -121,6 +121,8 @@ The comparison is an estimate, not a quote or a reservation. It excludes search 
 
 ## Errors
 
+An empty answer ending with `length`, including a reasoning-only stream, raises a non-retried provider error: raise `max_tokens` within your mode's limits or pick a non-reasoning model. The error includes the requested output limit when known; a truncated answer with content is unchanged.
+
 In PAYG mode, errors give one action at [quotum.org/payg](https://quotum.org/payg):
 
 - **401:** the project key is missing, invalid, expired or revoked; create a new project key.

@@ -1,0 +1,29 @@
+{
+  "empty": {
+    "id": "budget-fixture",
+    "choices": [{"index": 0, "message": {"role": "assistant", "content": "", "reasoning_content": "thinking"}, "finish_reason": "length"}],
+    "usage": {"completion_tokens": 64, "completion_tokens_details": {"reasoning_tokens": 64}}
+  },
+  "reasoning_stream": [
+    {"id": "budget-fixture", "choices": [{"index": 0, "delta": {"role": "assistant", "content": null}}]},
+    {"id": "budget-fixture", "choices": [{"index": 0, "delta": {"reasoning_content": "thinking"}}]},
+    {"id": "budget-fixture", "choices": [{"index": 0, "delta": {"reasoning": "still thinking"}}]},
+    {"id": "budget-fixture", "choices": [{"index": 0, "delta": {}, "finish_reason": "length"}]}
+  ],
+  "normal": {
+    "id": "answer-fixture",
+    "choices": [{"index": 0, "message": {"role": "assistant", "content": "hello", "reasoning_content": "thinking"}, "finish_reason": "stop"}],
+    "usage": {"prompt_tokens": 10, "completion_tokens": 64, "total_tokens": 74}
+  },
+  "truncated": {
+    "id": "answer-fixture",
+    "choices": [{"index": 0, "message": {"role": "assistant", "content": "hello", "reasoning_content": "thinking"}, "finish_reason": "length"}],
+    "usage": {"prompt_tokens": 10, "completion_tokens": 64, "total_tokens": 74}
+  },
+  "answer_stream": [
+    {"id": "answer-fixture", "choices": [{"index": 0, "delta": {"reasoning_content": "thinking"}}]},
+    {"id": "answer-fixture", "choices": [{"index": 0, "delta": {"content": "hello"}}]},
+    {"id": "answer-fixture", "choices": [{"index": 0, "delta": {}, "finish_reason": "length"}]},
+    {"id": "answer-fixture", "choices": [], "usage": {"prompt_tokens": 10, "completion_tokens": 64, "total_tokens": 74}}
+  ]
+}

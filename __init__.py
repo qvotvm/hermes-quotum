@@ -185,7 +185,35 @@ def _private_trace(name: str, info: dict) -> None:
         info.clear()
 
 
-def _safe_stream(response: Any, *, payg_mode: bool, streaming: bool = False, keys: tuple[str, ...] = ()) -> Any:
+OUTPUT_BUDGET_CODE = "quotum_reasoning_budget_exhausted"
+
+
+class _OutputBudget:
+    """Track answer output across chunks; reasoning alone is not an answer."""
+    def __init__(self, request: Any):
+        self.has_output = False
+        try:
+            body = json.loads(request.read())
+        except (AttributeError, ValueError):
+            body = None
+        self.limits = ", ".join(f"{name} {body[name]}" for name in ("max_tokens", "max_completion_tokens")
+                                if isinstance(body, dict) and type(body.get(name)) is int and 0 < body[name] <= 2 ** 53 - 1)
+
+    def check(self, body: dict | None) -> dict | None:
+        for choice in body.get("choices", []) if body else []:
+            if choice.get("index", 0) != 0:
+                continue
+            message = choice.get("message") or choice.get("delta") or {}
+            if any(message.get(name) for name in ("content", "tool_calls", "function_call", "refusal", "audio")):
+                self.has_output = True
+            if choice.get("finish_reason") == "length" and not self.has_output:
+                limit = f" ({self.limits})" if self.limits else ""
+                return {"error": {"code": OUTPUT_BUDGET_CODE,
+                                  "message": f"reasoning used the whole output budget{limit}; raise max_tokens or pick a non-reasoning model."}}
+        return None
+
+
+def _safe_stream(response: Any, *, payg_mode: bool, streaming: bool = False, keys: tuple[str, ...] = (), request: Any = None) -> Any:
     """Only the declared chat schema reaches the SDK; failures use local text."""
     import httpx
 
@@ -199,6 +227,29 @@ def _safe_stream(response: Any, *, payg_mode: bool, streaming: bool = False, key
         return {"error": {"message": message}}
 
     redactor = payg.DeltaRedactor(keys)
+    budget = _OutputBudget(request)
+
+    def read_body() -> dict | None:
+        try:
+            try:
+                value = json.loads(response.read())
+            except (ValueError, UnicodeError):
+                value = None
+            return payg.chat(value, keys)
+        except Exception:
+            raise httpx.ReadError("quotum response could not be read") from None
+
+    # The SDK retries exceptions during non-stream body reads. Return a terminal
+    # local status instead, before the SDK receives the successful HTTP status.
+    if not streaming and (media == "application/json" or not is_sse):
+        try:
+            body = read_body()
+            error = budget.check(body)
+            return httpx.Response(400 if error else response.status_code,
+                                  headers={**headers, **({"x-should-retry": "false"} if error else {})},
+                                  content=json.dumps(error or (body if body is not None else error_body())).encode())
+        finally:
+            payg.close_quietly(response)
 
     def encode(body: dict) -> bytes:
         return ("data: " + json.dumps(body) + "\n\n").encode()
@@ -230,18 +281,18 @@ def _safe_stream(response: Any, *, payg_mode: bool, streaming: bool = False, key
         if body is None:
             redactor.pending.clear()
             return encode(error_body())
+        error = budget.check(body)
+        if error is not None:
+            redactor.pending.clear()
+            return encode(error)
         return encode(redactor.apply(body))
 
     class SafeStream(httpx.SyncByteStream):
         def __iter__(self):
             try:
                 if media == "application/json" or not is_sse:
-                    try:
-                        value = json.loads(response.read())
-                    except (ValueError, UnicodeError):
-                        value = None
-                    body = payg.chat(value, keys)
-                    safe = json.dumps(body if body is not None else error_body())
+                    body = read_body()
+                    safe = json.dumps(budget.check(body) or (body if body is not None else error_body()))
                     yield ("data: " + safe + "\n\n" if streaming else safe).encode()
                     return
                 lines = []
@@ -373,7 +424,7 @@ def _quotum_client(client_kwargs: dict[str, Any]) -> Any:
                 kind = "quotum_cap_spent" if status == 402 else "quotum_key_ended" if status == 401 else "quotum_request_failed"
                 return _health_response(httpx.Response(status, headers=headers,
                                       json={"error": {"message": message, "type": kind}}, request=request), decision)
-            return _health_response(_safe_stream(response, payg_mode=False, streaming=_stream_requested(request), keys=payg.credentials(key)), decision)
+            return _health_response(_safe_stream(response, payg_mode=False, streaming=_stream_requested(request), keys=payg.credentials(key), request=request), decision)
 
     known = set(inspect.signature(openai.OpenAI.__init__).parameters) - {"self", "http_client"}
     return openai.OpenAI(http_client=openai.DefaultHttpxClient(transport=QuotumTransport(), trust_env=False, follow_redirects=False), **{k: v for k, v in client_kwargs.items() if k in known})
@@ -417,7 +468,7 @@ def _payg_client(client_kwargs: dict[str, Any]) -> Any:
                 headers["x-should-retry"] = "false"
                 return _health_response(httpx.Response(response.status_code, headers=headers,
                                       json={"error": {"code": payg.public_error_code(response.status_code, body), "message": message}}, request=request), decision)
-            return _health_response(_safe_stream(response, payg_mode=True, streaming=_stream_requested(request), keys=payg.credentials(key)), decision)
+            return _health_response(_safe_stream(response, payg_mode=True, streaming=_stream_requested(request), keys=payg.credentials(key), request=request), decision)
 
         def close(self):
             payg.close_quietly(self.transport)
@@ -566,6 +617,9 @@ def _supported_kwargs(cls: type, kwargs: dict[str, Any]) -> dict[str, Any]:
 
 def classify_error(error: Any = None, *, status_code: int | None = None, error_code: Any = None, message: str | None = None, body: Any = None, model: str | None = None, **_: Any) -> dict[str, Any] | None:
     """Venice answers 402 when the key's cap is spent and 401 when the key was deleted or rotated."""
+    if error_code == OUTPUT_BUDGET_CODE or payg.error_code(body) == OUTPUT_BUDGET_CODE:
+        return {"reason": "format_error", "retryable": False, "should_compress": False,
+                "should_rotate_credential": False, "should_fallback": False}
     if payg_key():
         if status_code in (401, 402, 403, 503):
             return {"reason": "auth_permanent" if status_code in (401, 403) else "billing" if status_code == 402 else "server_error",
