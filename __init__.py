@@ -46,7 +46,7 @@ from pathlib import Path
 
 from providers import register_provider
 from providers.base import ProviderProfile
-from . import payg
+from . import model_health, payg
 
 logger = logging.getLogger(__name__)
 
@@ -263,6 +263,72 @@ def _safe_stream(response: Any, *, payg_mode: bool, streaming: bool = False, key
     return httpx.Response(response.status_code, headers=headers, stream=SafeStream())
 
 
+def _health_request(request: Any, key: str) -> tuple[Any, dict | None]:
+    """Only chat model selection changes; metadata failures leave inference running."""
+    import httpx
+
+    if model_health.mode() == "off":
+        return request, None
+    try:
+        content = request.read()
+        body = json.loads(content)
+        keys = payg.credentials(key)
+        model = payg.model_id(body.get("model"), keys) if isinstance(body, dict) else None
+        if model is None:
+            return request, None
+        health = model_health.check(model)
+        if health is None:
+            return request, None
+        decision = {"requested": model, "model": model, "state": health.state, "reason": health.reason}
+        if health.state == "healthy":
+            return request, decision
+        configured = os.environ.get("QUOTUM_HEALTH_FALLBACK", "")
+        if model_health.mode() == "route" and configured.strip():
+            allowed = {r["id"] for r in catalog()}
+            for value in configured.split(","):
+                fallback = payg.model_id(value.strip(), keys)
+                if fallback is None or fallback == model or fallback not in allowed:
+                    continue
+                candidate = model_health.check(fallback)
+                if candidate is None:
+                    return request, None
+                if candidate.state != "healthy":
+                    continue
+                rewritten = model_health.replace_model(content, fallback)
+                # X search is tied to the final seat model, including tool filtering below.
+                if request.url.host == "api.venice.ai" and x_search_on():
+                    data = json.loads(rewritten)
+                    params = data.get("venice_parameters")
+                    if isinstance(params, dict):
+                        enabled = fallback in x_search_models()
+                        if bool(params.get("enable_x_search")) != enabled:
+                            if enabled:
+                                params["enable_x_search"] = True
+                            else:
+                                params.pop("enable_x_search", None)
+                            rewritten = json.dumps(data).encode()
+                headers = [(k, v) for k, v in request.headers.items() if k.lower() != "content-length"]
+                routed = httpx.Request(request.method, request.url, headers=headers, content=rewritten, extensions=request.extensions)
+                decision["model"] = fallback
+                logger.info("quotum: model health route %s to %s: %s.", model, fallback, health.reason)
+                return routed, decision
+        model_health.warn_once(model, health, logger)
+        return request, decision
+    except Exception:
+        logger.debug("quotum: model health unavailable; request continues")
+        return request, None
+
+
+def _health_response(response: Any, decision: dict | None) -> Any:
+    if decision is not None:
+        response.extensions["quotum_model_health"] = decision
+        if decision["requested"] != decision["model"]:
+            response.headers["x-quotum-model-from"] = decision["requested"]
+            response.headers["x-quotum-model-to"] = decision["model"]
+            response.headers["x-quotum-model-reason"] = decision["reason"]
+    return response
+
+
 def _quotum_client(client_kwargs: dict[str, Any]) -> Any:
     """Keep SDK errors informative and terminal, using only the inference key's hash."""
     import httpx
@@ -274,7 +340,9 @@ def _quotum_client(client_kwargs: dict[str, Any]) -> Any:
                 raise ValueError("quotum inference requires https://api.venice.ai")
             auth = request.headers.get("authorization", "")
             key = auth[7:].strip() if auth.lower().startswith("bearer ") else ""
+            decision = None
             if request.method == "POST" and request.url.path.endswith("/chat/completions"):
+                request, decision = _health_request(request, key)
                 content = request.read()
                 try:
                     model = json.loads(content).get("model")
@@ -303,9 +371,9 @@ def _quotum_client(client_kwargs: dict[str, Any]) -> Any:
                     f"quotum request failed (http {status}). check your request and https://quotum.org/seat."
                 )
                 kind = "quotum_cap_spent" if status == 402 else "quotum_key_ended" if status == 401 else "quotum_request_failed"
-                return httpx.Response(status, headers=headers,
-                                      json={"error": {"message": message, "type": kind}}, request=request)
-            return _safe_stream(response, payg_mode=False, streaming=_stream_requested(request), keys=payg.credentials(key))
+                return _health_response(httpx.Response(status, headers=headers,
+                                      json={"error": {"message": message, "type": kind}}, request=request), decision)
+            return _health_response(_safe_stream(response, payg_mode=False, streaming=_stream_requested(request), keys=payg.credentials(key)), decision)
 
     known = set(inspect.signature(openai.OpenAI.__init__).parameters) - {"self", "http_client"}
     return openai.OpenAI(http_client=openai.DefaultHttpxClient(transport=QuotumTransport(), trust_env=False, follow_redirects=False), **{k: v for k, v in client_kwargs.items() if k in known})
@@ -326,7 +394,9 @@ def _payg_client(client_kwargs: dict[str, Any]) -> Any:
                 raise ValueError("quotum payg inference requires https://quotum.org/api/payg/v1")
             auth = request.headers.get("authorization", "")
             key = auth[7:].strip() if auth.lower().startswith("bearer ") else ""
+            decision = None
             if request.method == "POST" and request.url.path.endswith("/chat/completions"):
+                request, decision = _health_request(request, key)
                 request.headers.setdefault("idempotency-key", str(uuid.uuid4()))
                 # Seat preflight is deliberately skipped: its meter and prices do not apply to PAYG.
             request.extensions["trace"] = _private_trace
@@ -345,9 +415,9 @@ def _payg_client(client_kwargs: dict[str, Any]) -> Any:
                 headers = _error_headers(response.headers, terminal=True)
                 payg.close_quietly(response)
                 headers["x-should-retry"] = "false"
-                return httpx.Response(response.status_code, headers=headers,
-                                      json={"error": {"code": payg.public_error_code(response.status_code, body), "message": message}}, request=request)
-            return _safe_stream(response, payg_mode=True, streaming=_stream_requested(request), keys=payg.credentials(key))
+                return _health_response(httpx.Response(response.status_code, headers=headers,
+                                      json={"error": {"code": payg.public_error_code(response.status_code, body), "message": message}}, request=request), decision)
+            return _health_response(_safe_stream(response, payg_mode=True, streaming=_stream_requested(request), keys=payg.credentials(key)), decision)
 
         def close(self):
             payg.close_quietly(self.transport)

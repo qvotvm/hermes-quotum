@@ -37,7 +37,7 @@ class PluginTests(unittest.TestCase):
         plugin._WARNED.clear()
         plugin._X_MODELS = None
         plugin._SESSION.set(None)
-        self.env = patch.dict(os.environ, {"QUOTUM_PAYG_KEY": "", "QUOTUM_PREFLIGHT": "0", "QUOTUM_X_SEARCH": "0", "QUOTUM_PREFLIGHT_MINUTES": "5"})
+        self.env = patch.dict(os.environ, {"QUOTUM_MODEL_HEALTH": "off", "QUOTUM_PAYG_KEY": "", "QUOTUM_PREFLIGHT": "0", "QUOTUM_X_SEARCH": "0", "QUOTUM_PREFLIGHT_MINUTES": "5"})
         self.env.start()
         self.addCleanup(self.env.stop)
 

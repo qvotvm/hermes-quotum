@@ -1,0 +1,2076 @@
+{
+  "models": [
+    {
+      "id": "abliteration-abliterated-model-large-flash",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2153,
+            "p90": 4129
+          },
+          "tokens_per_second": 238.2
+        }
+      },
+      "detail_path": "models/abliteration-abliterated-model-large-flash.json"
+    },
+    {
+      "id": "abliteration-abliterated-model-large-v2",
+      "uptime_24h_percent": 97.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1815,
+            "p90": 5898
+          },
+          "tokens_per_second": 116.7
+        }
+      },
+      "detail_path": "models/abliteration-abliterated-model-large-v2.json"
+    },
+    {
+      "id": "aion-labs-aion-3-0",
+      "uptime_24h_percent": 99.2,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1507,
+            "p90": 3536
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/aion-labs-aion-3-0.json"
+    },
+    {
+      "id": "aion-labs-aion-3-0-mini",
+      "uptime_24h_percent": 98.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 876,
+            "p90": 1680
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/aion-labs-aion-3-0-mini.json"
+    },
+    {
+      "id": "aion-labs-aion-3-5",
+      "uptime_24h_percent": 98.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2255,
+            "p90": 11137
+          },
+          "tokens_per_second": 61.8
+        }
+      },
+      "detail_path": "models/aion-labs-aion-3-5.json"
+    },
+    {
+      "id": "aion-labs-aion-3-5-mini",
+      "uptime_24h_percent": 93.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2055,
+            "p90": 3375
+          },
+          "tokens_per_second": 67.8
+        }
+      },
+      "detail_path": "models/aion-labs-aion-3-5-mini.json"
+    },
+    {
+      "id": "claude-fable-5",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 4003,
+            "p90": 4602
+          },
+          "tokens_per_second": 122.3
+        }
+      },
+      "detail_path": "models/claude-fable-5.json"
+    },
+    {
+      "id": "claude-fable-5-1",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2759,
+            "p90": 3428
+          },
+          "tokens_per_second": 116.7
+        }
+      },
+      "detail_path": "models/claude-fable-5-1.json"
+    },
+    {
+      "id": "claude-fable-5-2",
+      "uptime_24h_percent": 98.3,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3028,
+            "p90": 4129
+          },
+          "tokens_per_second": 132.1
+        }
+      },
+      "detail_path": "models/claude-fable-5-2.json"
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "uptime_24h_percent": 99.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1416,
+            "p90": 2255
+          },
+          "tokens_per_second": 278.1
+        }
+      },
+      "detail_path": "models/claude-haiku-5-5.json"
+    },
+    {
+      "id": "claude-opus-4-5",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/claude-opus-4-5.json"
+    },
+    {
+      "id": "claude-opus-4-6",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1872,
+            "p90": 3075
+          },
+          "tokens_per_second": 55.5
+        }
+      },
+      "detail_path": "models/claude-opus-4-6.json"
+    },
+    {
+      "id": "claude-opus-4-7",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2120,
+            "p90": 2437
+          },
+          "tokens_per_second": 103.1
+        }
+      },
+      "detail_path": "models/claude-opus-4-7.json"
+    },
+    {
+      "id": "claude-opus-4-8",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2514,
+            "p90": 2890
+          },
+          "tokens_per_second": 89.7
+        }
+      },
+      "detail_path": "models/claude-opus-4-8.json"
+    },
+    {
+      "id": "claude-opus-5",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3375,
+            "p90": 4747
+          },
+          "tokens_per_second": 113.2
+        }
+      },
+      "detail_path": "models/claude-opus-5.json"
+    },
+    {
+      "id": "claude-opus-5-5",
+      "uptime_24h_percent": 98.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2802,
+            "p90": 4747
+          },
+          "tokens_per_second": 156.7
+        }
+      },
+      "detail_path": "models/claude-opus-5-5.json"
+    },
+    {
+      "id": "claude-opus-5-5-fast",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2514,
+            "p90": 5990
+          },
+          "tokens_per_second": 429.3
+        }
+      },
+      "detail_path": "models/claude-opus-5-5-fast.json"
+    },
+    {
+      "id": "claude-opus-5-fast",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/claude-opus-5-fast.json"
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1176,
+            "p90": 2023
+          },
+          "tokens_per_second": 67.8
+        }
+      },
+      "detail_path": "models/claude-sonnet-4-6.json"
+    },
+    {
+      "id": "claude-sonnet-5",
+      "uptime_24h_percent": 99.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2087,
+            "p90": 2935
+          },
+          "tokens_per_second": 122.3
+        }
+      },
+      "detail_path": "models/claude-sonnet-5.json"
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1872,
+            "p90": 4973
+          },
+          "tokens_per_second": 177.4
+        }
+      },
+      "detail_path": "models/claude-sonnet-5-5.json"
+    },
+    {
+      "id": "deepseek-v3.2",
+      "uptime_24h_percent": 99.3,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1055,
+            "p90": 2055
+          },
+          "tokens_per_second": 37.1
+        }
+      },
+      "detail_path": "models/deepseek-v3.2.json"
+    },
+    {
+      "id": "deepseek-v4-1-flash",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 585,
+            "p90": 1416
+          },
+          "tokens_per_second": 234.5
+        }
+      },
+      "detail_path": "models/deepseek-v4-1-flash.json"
+    },
+    {
+      "id": "deepseek-v4-1-flash-1017",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1088,
+            "p90": 7215
+          },
+          "tokens_per_second": 172
+        }
+      },
+      "detail_path": "models/deepseek-v4-1-flash-1017.json"
+    },
+    {
+      "id": "deepseek-v4-1-flash-1017-ultrafast",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 774,
+            "p90": 1373
+          },
+          "tokens_per_second": 1105.3
+        }
+      },
+      "detail_path": "models/deepseek-v4-1-flash-1017-ultrafast.json"
+    },
+    {
+      "id": "deepseek-v4-1-flash-1017-uncensored",
+      "uptime_24h_percent": 99.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 904,
+            "p90": 2553
+          },
+          "tokens_per_second": 238.2
+        }
+      },
+      "detail_path": "models/deepseek-v4-1-flash-1017-uncensored.json"
+    },
+    {
+      "id": "deepseek-v4-1-flash-uncensored",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 904,
+            "p90": 2400
+          },
+          "tokens_per_second": 261.4
+        }
+      },
+      "detail_path": "models/deepseek-v4-1-flash-uncensored.json"
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "uptime_24h_percent": 97.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 836,
+            "p90": 1531
+          },
+          "tokens_per_second": 88.3
+        }
+      },
+      "detail_path": "models/deepseek-v4-flash.json"
+    },
+    {
+      "id": "deepseek-v4-flash-0731",
+      "uptime_24h_percent": 97.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 391,
+            "p90": 1373
+          },
+          "tokens_per_second": 96.9
+        }
+      },
+      "detail_path": "models/deepseek-v4-flash-0731.json"
+    },
+    {
+      "id": "deepseek-v4-flash-0731-fast",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 301,
+            "p90": 533
+          },
+          "tokens_per_second": 108
+        }
+      },
+      "detail_path": "models/deepseek-v4-flash-0731-fast.json"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "uptime_24h_percent": 97.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 34537,
+            "p90": 211881
+          },
+          "tokens_per_second": 34.8
+        }
+      },
+      "detail_path": "models/deepseek-v4-pro.json"
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "uptime_24h_percent": 98.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2120,
+            "p90": 3880
+          },
+          "tokens_per_second": 81.7
+        }
+      },
+      "detail_path": "models/deepseek-v4-pro-0813.json"
+    },
+    {
+      "id": "e2ee-deepseek-v4-1-flash-1017-abliterated",
+      "uptime_24h_percent": 95.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1291,
+            "p90": 4602
+          },
+          "tokens_per_second": 65.8
+        }
+      },
+      "detail_path": "models/e2ee-deepseek-v4-1-flash-1017-abliterated.json"
+    },
+    {
+      "id": "e2ee-deepseek-v4-flash",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1213,
+            "p90": 3762
+          },
+          "tokens_per_second": 67.8
+        }
+      },
+      "detail_path": "models/e2ee-deepseek-v4-flash.json"
+    },
+    {
+      "id": "e2ee-gemma-4-26b-a4b-uncensored-p",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 774,
+            "p90": 3821
+          },
+          "tokens_per_second": 59
+        }
+      },
+      "detail_path": "models/e2ee-gemma-4-26b-a4b-uncensored-p.json"
+    },
+    {
+      "id": "e2ee-glm-5-2-p",
+      "uptime_24h_percent": 98,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 78552,
+            "p90": 225438
+          },
+          "tokens_per_second": 18.2
+        }
+      },
+      "detail_path": "models/e2ee-glm-5-2-p.json"
+    },
+    {
+      "id": "e2ee-glm-5-3-flash",
+      "uptime_24h_percent": 80.3,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 918,
+            "p90": 8826
+          },
+          "tokens_per_second": 72.2
+        }
+      },
+      "detail_path": "models/e2ee-glm-5-3-flash.json"
+    },
+    {
+      "id": "e2ee-glm-5-3-p",
+      "uptime_24h_percent": 99.2,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1023,
+            "p90": 1706
+          },
+          "tokens_per_second": 50.5
+        }
+      },
+      "detail_path": "models/e2ee-glm-5-3-p.json"
+    },
+    {
+      "id": "e2ee-gpt-oss-120b-p",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 429,
+            "p90": 694
+          },
+          "tokens_per_second": 113.2
+        }
+      },
+      "detail_path": "models/e2ee-gpt-oss-120b-p.json"
+    },
+    {
+      "id": "e2ee-kimi-k2-6",
+      "uptime_24h_percent": 90,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/e2ee-kimi-k2-6.json"
+    },
+    {
+      "id": "e2ee-kimi-k3-1-pro-p",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1706,
+            "p90": 6178
+          },
+          "tokens_per_second": 164.2
+        }
+      },
+      "detail_path": "models/e2ee-kimi-k3-1-pro-p.json"
+    },
+    {
+      "id": "e2ee-kimi-k3-p",
+      "uptime_24h_percent": 91,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2514,
+            "p90": 84883
+          },
+          "tokens_per_second": 27.6
+        }
+      },
+      "detail_path": "models/e2ee-kimi-k3-p.json"
+    },
+    {
+      "id": "e2ee-qwen-2-5-7b-p",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/e2ee-qwen-2-5-7b-p.json"
+    },
+    {
+      "id": "e2ee-qwen3-6-35b-a3b",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/e2ee-qwen3-6-35b-a3b.json"
+    },
+    {
+      "id": "e2ee-qwen3-8-27b",
+      "uptime_24h_percent": 23.1,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/e2ee-qwen3-8-27b.json"
+    },
+    {
+      "id": "e2ee-qwen3-vl-30b-a3b-p",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/e2ee-qwen3-vl-30b-a3b-p.json"
+    },
+    {
+      "id": "gemini-3-1-pro-preview",
+      "uptime_24h_percent": 96,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3375,
+            "p90": 5458
+          },
+          "tokens_per_second": 113.2
+        }
+      },
+      "detail_path": "models/gemini-3-1-pro-preview.json"
+    },
+    {
+      "id": "gemini-3-5-flash",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/gemini-3-5-flash.json"
+    },
+    {
+      "id": "gemini-3-5-flash-lite",
+      "uptime_24h_percent": 99.3,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 585,
+            "p90": 1023
+          },
+          "tokens_per_second": 265.5
+        }
+      },
+      "detail_path": "models/gemini-3-5-flash-lite.json"
+    },
+    {
+      "id": "gemini-3-6-flash",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1629,
+            "p90": 2475
+          },
+          "tokens_per_second": 397.3
+        }
+      },
+      "detail_path": "models/gemini-3-6-flash.json"
+    },
+    {
+      "id": "gemini-3-7-flash",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2553,
+            "p90": 4674
+          },
+          "tokens_per_second": 126.1
+        }
+      },
+      "detail_path": "models/gemini-3-7-flash.json"
+    },
+    {
+      "id": "gemini-3-8-flash",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2675,
+            "p90": 5807
+          },
+          "tokens_per_second": 126.1
+        }
+      },
+      "detail_path": "models/gemini-3-8-flash.json"
+    },
+    {
+      "id": "gemini-3-flash-preview",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2475,
+            "p90": 3821
+          },
+          "tokens_per_second": 204
+        }
+      },
+      "detail_path": "models/gemini-3-flash-preview.json"
+    },
+    {
+      "id": "gemini-4-argon",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 4973,
+            "p90": 27371
+          },
+          "tokens_per_second": 78
+        }
+      },
+      "detail_path": "models/gemini-4-argon.json"
+    },
+    {
+      "id": "gemini-4-carbon",
+      "uptime_24h_percent": 96.1,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 15185,
+            "p90": 36747
+          },
+          "tokens_per_second": 166.7
+        }
+      },
+      "detail_path": "models/gemini-4-carbon.json"
+    },
+    {
+      "id": "gemini-4-hydrogen",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2186,
+            "p90": 4896
+          },
+          "tokens_per_second": 161.6
+        }
+      },
+      "detail_path": "models/gemini-4-hydrogen.json"
+    },
+    {
+      "id": "gemini-4-neon",
+      "uptime_24h_percent": 99.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3591,
+            "p90": 8964
+          },
+          "tokens_per_second": 154.3
+        }
+      },
+      "detail_path": "models/gemini-4-neon.json"
+    },
+    {
+      "id": "gemma-4-uncensored",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 567,
+            "p90": 2055
+          },
+          "tokens_per_second": 85.6
+        }
+      },
+      "detail_path": "models/gemma-4-uncensored.json"
+    },
+    {
+      "id": "glm-5-3-flash-uncensored",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1039,
+            "p90": 4003
+          },
+          "tokens_per_second": 200.8
+        }
+      },
+      "detail_path": "models/glm-5-3-flash-uncensored.json"
+    },
+    {
+      "id": "google-gemma-3-27b-it",
+      "uptime_24h_percent": 99.3,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2675,
+            "p90": 35625
+          },
+          "tokens_per_second": 11.4
+        }
+      },
+      "detail_path": "models/google-gemma-3-27b-it.json"
+    },
+    {
+      "id": "google-gemma-4-26b-a4b-it",
+      "uptime_24h_percent": 99.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 346,
+            "p90": 727
+          },
+          "tokens_per_second": 172
+        }
+      },
+      "detail_path": "models/google-gemma-4-26b-a4b-it.json"
+    },
+    {
+      "id": "google-gemma-4-31b-it",
+      "uptime_24h_percent": 99.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 567,
+            "p90": 4129
+          },
+          "tokens_per_second": 66.8
+        }
+      },
+      "detail_path": "models/google-gemma-4-31b-it.json"
+    },
+    {
+      "id": "grok-4-20",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1105,
+            "p90": 1760
+          },
+          "tokens_per_second": 109.7
+        }
+      },
+      "detail_path": "models/grok-4-20.json"
+    },
+    {
+      "id": "grok-4-20-multi-agent",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/grok-4-20-multi-agent.json"
+    },
+    {
+      "id": "grok-4-3",
+      "uptime_24h_percent": 94.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1158,
+            "p90": 1992
+          },
+          "tokens_per_second": 76.8
+        }
+      },
+      "detail_path": "models/grok-4-3.json"
+    },
+    {
+      "id": "grok-4-5",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1902,
+            "p90": 3375
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/grok-4-5.json"
+    },
+    {
+      "id": "grok-4-6",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1787,
+            "p90": 7918
+          },
+          "tokens_per_second": 80.5
+        }
+      },
+      "detail_path": "models/grok-4-6.json"
+    },
+    {
+      "id": "grok-4-7",
+      "uptime_24h_percent": 99.3,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2400,
+            "p90": 12222
+          },
+          "tokens_per_second": 71.1
+        }
+      },
+      "detail_path": "models/grok-4-7.json"
+    },
+    {
+      "id": "grok-build-0-1",
+      "uptime_24h_percent": 6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/grok-build-0-1.json"
+    },
+    {
+      "id": "hy4-preview",
+      "uptime_24h_percent": 99.2,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1629,
+            "p90": 2981
+          },
+          "tokens_per_second": 91.1
+        }
+      },
+      "detail_path": "models/hy4-preview.json"
+    },
+    {
+      "id": "kimi-k2-6",
+      "uptime_24h_percent": 94.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 918,
+            "p90": 2221
+          },
+          "tokens_per_second": 26.3
+        }
+      },
+      "detail_path": "models/kimi-k2-6.json"
+    },
+    {
+      "id": "kimi-k2-7-code",
+      "uptime_24h_percent": 99.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1311,
+            "p90": 3323
+          },
+          "tokens_per_second": 96.9
+        }
+      },
+      "detail_path": "models/kimi-k2-7-code.json"
+    },
+    {
+      "id": "kimi-k3",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 836,
+            "p90": 2186
+          },
+          "tokens_per_second": 136.3
+        }
+      },
+      "detail_path": "models/kimi-k3.json"
+    },
+    {
+      "id": "kimi-k3-1-pro",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3481,
+            "p90": 11487
+          },
+          "tokens_per_second": 118.5
+        }
+      },
+      "detail_path": "models/kimi-k3-1-pro.json"
+    },
+    {
+      "id": "kimi-k3-1-pro-highspeed",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/kimi-k3-1-pro-highspeed.json"
+    },
+    {
+      "id": "kimi-k3-fast-api",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1123,
+            "p90": 2153
+          },
+          "tokens_per_second": 140.6
+        }
+      },
+      "detail_path": "models/kimi-k3-fast-api.json"
+    },
+    {
+      "id": "llama-3.2-3b",
+      "uptime_24h_percent": 99.1,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 31961,
+            "p90": 353423
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/llama-3.2-3b.json"
+    },
+    {
+      "id": "llama-3.3-70b",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 6574,
+            "p90": 16157
+          },
+          "tokens_per_second": 23.3
+        }
+      },
+      "detail_path": "models/llama-3.3-70b.json"
+    },
+    {
+      "id": "minimax-m25",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 961,
+            "p90": 1962
+          },
+          "tokens_per_second": 45.3
+        }
+      },
+      "detail_path": "models/minimax-m25.json"
+    },
+    {
+      "id": "minimax-m27",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 876,
+            "p90": 1439
+          },
+          "tokens_per_second": 42
+        }
+      },
+      "detail_path": "models/minimax-m27.json"
+    },
+    {
+      "id": "minimax-m3-1-flash",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 918,
+            "p90": 3762
+          },
+          "tokens_per_second": 177.4
+        }
+      },
+      "detail_path": "models/minimax-m3-1-flash.json"
+    },
+    {
+      "id": "minimax-m3-preview",
+      "uptime_24h_percent": 98.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 623,
+            "p90": 2437
+          },
+          "tokens_per_second": 128.1
+        }
+      },
+      "detail_path": "models/minimax-m3-preview.json"
+    },
+    {
+      "id": "mistral-small-3-2-24b-instruct",
+      "uptime_24h_percent": 98.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1176,
+            "p90": 63225
+          },
+          "tokens_per_second": 13.7
+        }
+      },
+      "detail_path": "models/mistral-small-3-2-24b-instruct.json"
+    },
+    {
+      "id": "muse-spark-open",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/muse-spark-open.json"
+    },
+    {
+      "id": "muse-wonder",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 14495,
+            "p90": 74982
+          },
+          "tokens_per_second": 1438.6
+        }
+      },
+      "detail_path": "models/muse-wonder.json"
+    },
+    {
+      "id": "nvidia-nemotron-3-5-super-vl-120b-a12b",
+      "uptime_24h_percent": 99.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 246,
+            "p90": 471
+          },
+          "tokens_per_second": 622.8
+        }
+      },
+      "detail_path": "models/nvidia-nemotron-3-5-super-vl-120b-a12b.json"
+    },
+    {
+      "id": "nvidia-nemotron-3-nano-30b-a3b",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/nvidia-nemotron-3-nano-30b-a3b.json"
+    },
+    {
+      "id": "nvidia-nemotron-3-ultra-550b-a55b",
+      "uptime_24h_percent": 99.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 623,
+            "p90": 1531
+          },
+          "tokens_per_second": 103.1
+        }
+      },
+      "detail_path": "models/nvidia-nemotron-3-ultra-550b-a55b.json"
+    },
+    {
+      "id": "olafangensan-glm-4.7-flash-heretic",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 642,
+            "p90": 1962
+          },
+          "tokens_per_second": 108
+        }
+      },
+      "detail_path": "models/olafangensan-glm-4.7-flash-heretic.json"
+    },
+    {
+      "id": "openai-gpt-4o-2024-11-20",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/openai-gpt-4o-2024-11-20.json"
+    },
+    {
+      "id": "openai-gpt-4o-mini-2024-07-18",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/openai-gpt-4o-mini-2024-07-18.json"
+    },
+    {
+      "id": "openai-gpt-52",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 5898,
+            "p90": 14951
+          },
+          "tokens_per_second": 78
+        }
+      },
+      "detail_path": "models/openai-gpt-52.json"
+    },
+    {
+      "id": "openai-gpt-53-codex",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 10467,
+            "p90": 59423
+          },
+          "tokens_per_second": 305.2
+        }
+      },
+      "detail_path": "models/openai-gpt-53-codex.json"
+    },
+    {
+      "id": "openai-gpt-54",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 7558,
+            "p90": 17732
+          },
+          "tokens_per_second": 63.8
+        }
+      },
+      "detail_path": "models/openai-gpt-54.json"
+    },
+    {
+      "id": "openai-gpt-54-mini",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2593,
+            "p90": 4193
+          },
+          "tokens_per_second": 161.6
+        }
+      },
+      "detail_path": "models/openai-gpt-54-mini.json"
+    },
+    {
+      "id": "openai-gpt-54-pro",
+      "uptime_24h_percent": 86,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/openai-gpt-54-pro.json"
+    },
+    {
+      "id": "openai-gpt-55",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 7104,
+            "p90": 17190
+          },
+          "tokens_per_second": 75.6
+        }
+      },
+      "detail_path": "models/openai-gpt-55.json"
+    },
+    {
+      "id": "openai-gpt-55-pro",
+      "uptime_24h_percent": 91,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/openai-gpt-55-pro.json"
+    },
+    {
+      "id": "openai-gpt-56-luna",
+      "uptime_24h_percent": 99.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3821,
+            "p90": 9837
+          },
+          "tokens_per_second": 138.4
+        }
+      },
+      "detail_path": "models/openai-gpt-56-luna.json"
+    },
+    {
+      "id": "openai-gpt-56-luna-pro",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/openai-gpt-56-luna-pro.json"
+    },
+    {
+      "id": "openai-gpt-56-sol",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 4259,
+            "p90": 9537
+          },
+          "tokens_per_second": 200.8
+        }
+      },
+      "detail_path": "models/openai-gpt-56-sol.json"
+    },
+    {
+      "id": "openai-gpt-56-sol-pro",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 312196,
+            "p90": 358945
+          },
+          "tokens_per_second": 1461.1
+        }
+      },
+      "detail_path": "models/openai-gpt-56-sol-pro.json"
+    },
+    {
+      "id": "openai-gpt-56-terra",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 6473,
+            "p90": 11137
+          },
+          "tokens_per_second": 84.3
+        }
+      },
+      "detail_path": "models/openai-gpt-56-terra.json"
+    },
+    {
+      "id": "openai-gpt-56-terra-pro",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": 1140.1
+        }
+      },
+      "detail_path": "models/openai-gpt-56-terra-pro.json"
+    },
+    {
+      "id": "openai-gpt-6-astra",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 11137,
+            "p90": 30508
+          },
+          "tokens_per_second": 103.1
+        }
+      },
+      "detail_path": "models/openai-gpt-6-astra.json"
+    },
+    {
+      "id": "openai-gpt-6-astra-pro",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/openai-gpt-6-astra-pro.json"
+    },
+    {
+      "id": "openai-gpt-6-luna",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3172,
+            "p90": 9686
+          },
+          "tokens_per_second": 149.6
+        }
+      },
+      "detail_path": "models/openai-gpt-6-luna.json"
+    },
+    {
+      "id": "openai-gpt-6-sol",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3821,
+            "p90": 8690
+          },
+          "tokens_per_second": 194.7
+        }
+      },
+      "detail_path": "models/openai-gpt-6-sol.json"
+    },
+    {
+      "id": "openai-gpt-61-sol",
+      "uptime_24h_percent": 97.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 9537,
+            "p90": 18009
+          },
+          "tokens_per_second": 166.7
+        }
+      },
+      "detail_path": "models/openai-gpt-61-sol.json"
+    },
+    {
+      "id": "openai-gpt-61-sol-ultrafast",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3536,
+            "p90": 5543
+          },
+          "tokens_per_second": 1122.6
+        }
+      },
+      "detail_path": "models/openai-gpt-61-sol-ultrafast.json"
+    },
+    {
+      "id": "openai-gpt-61-terra",
+      "uptime_24h_percent": 99.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 9390,
+            "p90": 24939
+          },
+          "tokens_per_second": 113.2
+        }
+      },
+      "detail_path": "models/openai-gpt-61-terra.json"
+    },
+    {
+      "id": "openai-gpt-62-astra",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 8964,
+            "p90": 15908
+          },
+          "tokens_per_second": 138.4
+        }
+      },
+      "detail_path": "models/openai-gpt-62-astra.json"
+    },
+    {
+      "id": "openai-gpt-62-astra-pro",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 46368,
+            "p90": 263245
+          },
+          "tokens_per_second": 1290.7
+        }
+      },
+      "detail_path": "models/openai-gpt-62-astra-pro.json"
+    },
+    {
+      "id": "openai-gpt-62-sol",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 7327,
+            "p90": 16409
+          },
+          "tokens_per_second": 109.7
+        }
+      },
+      "detail_path": "models/openai-gpt-62-sol.json"
+    },
+    {
+      "id": "openai-gpt-62-sol-pro",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 31961,
+            "p90": 88925
+          },
+          "tokens_per_second": 1310.8
+        }
+      },
+      "detail_path": "models/openai-gpt-62-sol-pro.json"
+    },
+    {
+      "id": "openai-gpt-oss-120b",
+      "uptime_24h_percent": 99.2,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 585,
+            "p90": 1007
+          },
+          "tokens_per_second": 20.9
+        }
+      },
+      "detail_path": "models/openai-gpt-oss-120b.json"
+    },
+    {
+      "id": "pareto",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/pareto.json"
+    },
+    {
+      "id": "qwen-3-6-plus",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1992,
+            "p90": 3272
+          },
+          "tokens_per_second": 59
+        }
+      },
+      "detail_path": "models/qwen-3-6-plus.json"
+    },
+    {
+      "id": "qwen-3-7-max",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/qwen-3-7-max.json"
+    },
+    {
+      "id": "qwen-3-7-plus",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2890,
+            "p90": 20387
+          },
+          "tokens_per_second": 62.5
+        }
+      },
+      "detail_path": "models/qwen-3-7-plus.json"
+    },
+    {
+      "id": "qwen-3-8-2-4t-a95b",
+      "uptime_24h_percent": 98.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 961,
+            "p90": 1815
+          },
+          "tokens_per_second": 122.3
+        }
+      },
+      "detail_path": "models/qwen-3-8-2-4t-a95b.json"
+    },
+    {
+      "id": "qwen-3-8-27b",
+      "uptime_24h_percent": 99.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1555,
+            "p90": 9104
+          },
+          "tokens_per_second": 85.6
+        }
+      },
+      "detail_path": "models/qwen-3-8-27b.json"
+    },
+    {
+      "id": "qwen-3-8-flash",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1844,
+            "p90": 3762
+          },
+          "tokens_per_second": 66.8
+        }
+      },
+      "detail_path": "models/qwen-3-8-flash.json"
+    },
+    {
+      "id": "qwen-3-8-max",
+      "uptime_24h_percent": 99.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2514,
+            "p90": 19460
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/qwen-3-8-max.json"
+    },
+    {
+      "id": "qwen-4-max",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 4747,
+            "p90": 6994
+          },
+          "tokens_per_second": 66.8
+        }
+      },
+      "detail_path": "models/qwen-4-max.json"
+    },
+    {
+      "id": "qwen3-235b-a22b-instruct-2507",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 559,
+            "p90": 932
+          },
+          "tokens_per_second": 18.7
+        }
+      },
+      "detail_path": "models/qwen3-235b-a22b-instruct-2507.json"
+    },
+    {
+      "id": "qwen3-235b-a22b-thinking-2507",
+      "uptime_24h_percent": 98.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 642,
+            "p90": 1331
+          },
+          "tokens_per_second": 132.1
+        }
+      },
+      "detail_path": "models/qwen3-235b-a22b-thinking-2507.json"
+    },
+    {
+      "id": "qwen3-5-35b-a3b",
+      "uptime_24h_percent": 99.8,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 739,
+            "p90": 1088
+          },
+          "tokens_per_second": 177.4
+        }
+      },
+      "detail_path": "models/qwen3-5-35b-a3b.json"
+    },
+    {
+      "id": "qwen3-5-397b-a17b",
+      "uptime_24h_percent": 99.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 947,
+            "p90": 1629
+          },
+          "tokens_per_second": 138.4
+        }
+      },
+      "detail_path": "models/qwen3-5-397b-a17b.json"
+    },
+    {
+      "id": "qwen3-6-27b",
+      "uptime_24h_percent": 98.2,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 663,
+            "p90": 1232
+          },
+          "tokens_per_second": 66.8
+        }
+      },
+      "detail_path": "models/qwen3-6-27b.json"
+    },
+    {
+      "id": "qwen3-6-35b-a3b",
+      "uptime_24h_percent": 98.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 633,
+            "p90": 1232
+          },
+          "tokens_per_second": 22.2
+        }
+      },
+      "detail_path": "models/qwen3-6-35b-a3b.json"
+    },
+    {
+      "id": "qwen3-coder-480b-a35b-instruct-turbo",
+      "uptime_24h_percent": 99.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1072,
+            "p90": 36747
+          },
+          "tokens_per_second": 96.9
+        }
+      },
+      "detail_path": "models/qwen3-coder-480b-a35b-instruct-turbo.json"
+    },
+    {
+      "id": "qwen3-next-80b",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/qwen3-next-80b.json"
+    },
+    {
+      "id": "qwen3-vl-235b-a22b",
+      "uptime_24h_percent": 99.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 663,
+            "p90": 1962
+          },
+          "tokens_per_second": 68.9
+        }
+      },
+      "detail_path": "models/qwen3-vl-235b-a22b.json"
+    },
+    {
+      "id": "seed-2-1-turbo",
+      "uptime_24h_percent": 99,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": null,
+            "p90": null
+          },
+          "tokens_per_second": null
+        }
+      },
+      "detail_path": "models/seed-2-1-turbo.json"
+    },
+    {
+      "id": "venice-uncensored-1-2",
+      "uptime_24h_percent": 99.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 786,
+            "p90": 1507
+          },
+          "tokens_per_second": 120.4
+        }
+      },
+      "detail_path": "models/venice-uncensored-1-2.json"
+    },
+    {
+      "id": "venice-uncensored-role-play",
+      "uptime_24h_percent": 99.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1023,
+            "p90": 1352
+          },
+          "tokens_per_second": 79.2
+        }
+      },
+      "detail_path": "models/venice-uncensored-role-play.json"
+    },
+    {
+      "id": "xiaomi-mimo-v2-5",
+      "uptime_24h_percent": 98.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1439,
+            "p90": 7442
+          },
+          "tokens_per_second": 50.5
+        }
+      },
+      "detail_path": "models/xiaomi-mimo-v2-5.json"
+    },
+    {
+      "id": "xiaomi-mimo-v2-6-flash",
+      "uptime_24h_percent": 98.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 10965,
+            "p90": 28233
+          },
+          "tokens_per_second": 45.3
+        }
+      },
+      "detail_path": "models/xiaomi-mimo-v2-6-flash.json"
+    },
+    {
+      "id": "z-ai-glm-5-3",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1271,
+            "p90": 4129
+          },
+          "tokens_per_second": 151.9
+        }
+      },
+      "detail_path": "models/z-ai-glm-5-3.json"
+    },
+    {
+      "id": "z-ai-glm-5-3-flash",
+      "uptime_24h_percent": 99.6,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 623,
+            "p90": 1962
+          },
+          "tokens_per_second": 140.6
+        }
+      },
+      "detail_path": "models/z-ai-glm-5-3-flash.json"
+    },
+    {
+      "id": "z-ai-glm-5-turbo",
+      "uptime_24h_percent": 99.9,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1604,
+            "p90": 3222
+          },
+          "tokens_per_second": 51.3
+        }
+      },
+      "detail_path": "models/z-ai-glm-5-turbo.json"
+    },
+    {
+      "id": "z-ai-glm-5v-turbo",
+      "uptime_24h_percent": 100,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 4973,
+            "p90": 18866
+          },
+          "tokens_per_second": 27.6
+        }
+      },
+      "detail_path": "models/z-ai-glm-5v-turbo.json"
+    },
+    {
+      "id": "zai-org-glm-4.6",
+      "uptime_24h_percent": 99.1,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 2759,
+            "p90": 6083
+          },
+          "tokens_per_second": 28
+        }
+      },
+      "detail_path": "models/zai-org-glm-4.6.json"
+    },
+    {
+      "id": "zai-org-glm-4.7",
+      "uptime_24h_percent": 99.1,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1213,
+            "p90": 4896
+          },
+          "tokens_per_second": 25.9
+        }
+      },
+      "detail_path": "models/zai-org-glm-4.7.json"
+    },
+    {
+      "id": "zai-org-glm-5",
+      "uptime_24h_percent": 99.4,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 1213,
+            "p90": 3704
+          },
+          "tokens_per_second": 88.3
+        }
+      },
+      "detail_path": "models/zai-org-glm-5.json"
+    },
+    {
+      "id": "zai-org-glm-5-1",
+      "uptime_24h_percent": 97.7,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 642,
+            "p90": 2291
+          },
+          "tokens_per_second": 80.5
+        }
+      },
+      "detail_path": "models/zai-org-glm-5-1.json"
+    },
+    {
+      "id": "zai-org-glm-5-2",
+      "uptime_24h_percent": 99.5,
+      "performance": {
+        "1h": {
+          "ttft_ms": {
+            "p50": 3647,
+            "p90": 14052
+          },
+          "tokens_per_second": 114.9
+        }
+      },
+      "detail_path": "models/zai-org-glm-5-2.json"
+    }
+  ]
+}

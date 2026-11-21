@@ -66,8 +66,9 @@ class ModesTest(unittest.TestCase):
         constants = types.ModuleType("hermes_constants")
         constants.get_hermes_home = lambda: self.tmp.name
         self.start(patch.dict(sys.modules, {**hook_fixtures(), "hermes_constants": constants}))
-        self.start(patch.dict(os.environ, {"QUOTUM_SEAT_KEY": SEAT_KEY}, clear=True))
+        self.start(patch.dict(os.environ, {"QUOTUM_SEAT_KEY": SEAT_KEY, "QUOTUM_MODEL_HEALTH": "off"}, clear=True))
         self.start(patch("urllib.request.urlopen", side_effect=AssertionError("unmocked network access")))
+        self.start(patch("urllib.request.OpenerDirector.open", side_effect=AssertionError("unmocked network access")))
         self.start(patch("httpx.HTTPTransport.handle_request", side_effect=AssertionError("unmocked network access")))
         self.plugin = load("quotum_test_plugin", ROOT / "__init__.py", True)
         self.api = load("quotum_test_dashboard", ROOT / "dashboard/plugin_api.py")

@@ -55,6 +55,7 @@ Manage wallet enrollment, funding and withdrawals on `/payg`. SDK retries are di
 | seat chat completions | api.venice.ai | your prompts, the model's replies and the key, straight from your machine to Venice |
 | model list and optional preflight prices | quotum.org/api/seat/models | nothing of yours: the public catalog of the seat's models |
 | `/usage`, 402 reset guidance and optional preflight | quotum.org/api/meter/&lt;h&gt; | h, the first 16 hex characters of the key's sha256, and the plugin version in a header. The key itself is never sent to quotum.org |
+| model health (unless `QUOTUM_MODEL_HEALTH=off`) | metrics.venice.ai/v1/index.json and checked model details | no key; public uptime and latency metrics |
 | X search model list (only with `QUOTUM_X_SEARCH=1`) | api.venice.ai/api/v1/models | nothing of yours: Venice's public model catalog, read once to see which models support X search |
 | the Seals tab in `hermes dashboard` | quotum.org/api/meter/&lt;h&gt;, then quotum.org/api/record?seat=N | the same h as `/usage`, which answers the seat number; then the seat's public record by its number. The tab never sends the seat key |
 | PAYG chat completions | quotum.org/api/payg/v1/chat/completions | your prompts and project bearer; quotum relays the request to its provider and returns the reply and billing receipt |
@@ -88,6 +89,14 @@ The list is the seat's catalog: private models and anonymized models, as Venice 
 - **Anonymized:** these are third-party models (for example Claude, GPT or Gemini). The provider behind the model sees the prompt but not who sent it.
 
 Each model's class is shown on [quotum.org/models](https://quotum.org/models). If you only want private models, pick from that list. Seat requests turn off Venice's own system prompt; the PAYG gateway controls its own provider parameters.
+
+## Model health
+
+`QUOTUM_MODEL_HEALTH=warn` is the default. Before chat, the provider reads public, keyless metrics from `https://metrics.venice.ai/v1/index.json` and checked model details, keeping your model and logging a down, degraded or unknown model once per cache window. Set `route` and `QUOTUM_HEALTH_FALLBACK=model-one,model-two` to try healthy fallbacks in order. Each must also be in the seat's private/anonymized catalog, in either seat or PAYG mode; PAYG still enforces your project key's access. Without a healthy fallback, your model stays selected. Set `off` for no metrics reads.
+
+A model is unknown when absent from the index, its 24h uptime is null, or both last detail buckets have null uptime, even with status `up`. It is unhealthy below 97.0% uptime, when the latest bucket is not `up`, or when 1h time to first token p90 exceeds 15,000 ms. Missing 1h latency alone is allowed, with unknown latency in the reason.
+
+`QUOTUM_METRICS_CACHE_SECONDS` sets the cache interval (default 300, positive seconds). Fetches time out after 2 seconds, send no key or authorization and refuse redirects. Failed or unreadable metrics keep chat unchanged, log only at DEBUG and pause metrics reads for 60 seconds. Routes log from/to/reason at INFO and expose local `x-quotum-model-from`, `x-quotum-model-to`, `x-quotum-model-reason` headers and `extensions["quotum_model_health"]` on raw HTTP responses. The dashboard and `/usage` do not display health yet.
 
 ## Live X search (optional)
 
