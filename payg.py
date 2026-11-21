@@ -5,7 +5,7 @@ import re
 from datetime import datetime
 from typing import Any
 
-VERSION = "0.3.2"
+VERSION = "0.4.0"
 KEY_ENV = "QUOTUM_PAYG_KEY"
 OUTPUT_LIMIT = 2048
 BASE = "https://quotum.org/api/payg/v1"

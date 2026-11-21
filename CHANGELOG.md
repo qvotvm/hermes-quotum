@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 (2026-11-22)
 
 - add public, keyless Venice model health before seat and PAYG chat. warn by default, optionally route to the first healthy configured fallback in the seat catalog, or disable metrics reads. cache metrics for 300 seconds and failures for 60 seconds; keep chat unchanged when metrics are unavailable.
 - treat null recent uptime as unknown, check 97% uptime and 15-second p90 latency, and expose each route through an INFO log, local response headers and a structured response extension. preserve other request bytes and use the final seat model for X search.
+- report empty answers ending with `length`, including reasoning-only streams, as terminal output-budget errors. include the requested limit when known and preserve replies with answer output.
+- default seat clients to zero SDK retries so failed calls are not automatically replayed by the provider. preserve explicit caller retry settings, keep PAYG retries at zero, and leave Hermes's own recovery in control.
 
 ## 0.3.2 (2026-11-12)
 
