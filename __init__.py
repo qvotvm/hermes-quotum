@@ -427,7 +427,9 @@ def _quotum_client(client_kwargs: dict[str, Any]) -> Any:
             return _health_response(_safe_stream(response, payg_mode=False, streaming=_stream_requested(request), keys=payg.credentials(key), request=request), decision)
 
     known = set(inspect.signature(openai.OpenAI.__init__).parameters) - {"self", "http_client"}
-    return openai.OpenAI(http_client=openai.DefaultHttpxClient(transport=QuotumTransport(), trust_env=False, follow_redirects=False), **{k: v for k, v in client_kwargs.items() if k in known})
+    kwargs = {k: v for k, v in client_kwargs.items() if k in known}
+    kwargs.setdefault("max_retries", 0)
+    return openai.OpenAI(http_client=openai.DefaultHttpxClient(transport=QuotumTransport(), trust_env=False, follow_redirects=False), **kwargs)
 
 
 def _payg_client(client_kwargs: dict[str, Any]) -> Any:

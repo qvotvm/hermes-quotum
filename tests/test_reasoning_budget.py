@@ -1,4 +1,4 @@
-"""Output-budget failures and existing retry behavior, with offline HTTP fixtures."""
+"""Output-budget failures and SDK retry controls, with offline HTTP fixtures."""
 import copy
 import errno
 import json
@@ -9,7 +9,7 @@ from unittest.mock import patch
 import httpx
 import openai
 
-from test_modes import ModesTest, PAYG_KEY, ROOT
+from test_modes import ModesTest, PAYG_KEY, ROOT, SEAT_KEY
 Base = ModesTest
 del ModesTest
 
@@ -165,26 +165,27 @@ class ReasoningBudgetTests(Base):
                     self.assertEqual({k: wire[k] for k in ('max_tokens', 'max_completion_tokens') if k in wire}, limits)
             self.assertEqual(self.plugin.quotum.get_max_tokens('chosen'), 2048 if enabled else None)
 
-    def test_existing_504_429_and_connect_retries_unchanged(self):
+    def test_504_429_and_connect_failures_default_to_one_attempt(self):
         for enabled in self.modes():
             for failure in (504, 429, httpx.ReadTimeout('fixture'), OSError(errno.ETIMEDOUT, 'fixture')):
-                with self.subTest(payg=enabled, failure=failure):
-                    calls = []
-                    def handler(req):
-                        calls.append(req)
-                        if isinstance(failure, Exception):
-                            raise failure
-                        return httpx.Response(failure, json={'error': {'message': 'fixture'}})
-                    client = self.sdk_client(handler)
-                    # The seat preserves the caller's retry setting; PAYG overrides it.
-                    self.assertEqual(client.max_retries, 0 if enabled else 9)
-                    if not enabled:
-                        client = client.with_options(max_retries=1)
-                    with patch.object(openai.OpenAI, '_sleep_for_retry'), self.assertRaises(openai.APIError):
-                        client.chat.completions.create(model='chosen', messages=[])
-                    self.assertEqual(len(calls), 1 if enabled else 2)
-                    if not enabled:
-                        self.assertTrue(all('idempotency-key' not in req.headers for req in calls))
+                for kwargs in ({}, {'max_retries': 0}, {'max_retries': 1}):
+                    with self.subTest(payg=enabled, failure=failure, kwargs=kwargs):
+                        calls = []
+                        def handler(req):
+                            calls.append(req)
+                            if isinstance(failure, Exception):
+                                raise failure
+                            return httpx.Response(failure, json={'error': {'message': 'fixture'}})
+                        with patch.object(httpx.HTTPTransport, 'handle_request', side_effect=httpx.MockTransport(handler).handle_request), \
+                                self.plugin.quotum.create_client(api_key=SEAT_KEY, base_url=self.plugin.VENICE_BASE, **kwargs) as client:
+                            retries = 0 if enabled else kwargs.get('max_retries', 0)
+                            self.assertEqual(client.max_retries, retries)
+                            with patch.object(openai.OpenAI, '_sleep_for_retry') as sleep, self.assertRaises(openai.APIError):
+                                client.chat.completions.create(model='chosen', messages=[])
+                            self.assertEqual(len(calls), 1 + retries)
+                            self.assertEqual(sleep.call_count, retries)
+                            if not enabled:
+                                self.assertTrue(all('idempotency-key' not in req.headers for req in calls))
 
     def test_body_read_retries_depend_on_streaming(self):
         for enabled in self.modes():
